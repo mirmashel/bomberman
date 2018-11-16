@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <title>Bomberman</title>
+    <meta name="description" content="Transmission">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+
+    <script src="js/external/preloadjs-NEXT.combined.js"></script>
+    <script src="js/external/easeljs-NEXT.combined.js"></script>
+    <script src="js/external/jquery-3.3.1.min.js"></script>
+
+    <script src="js/settings/ClusterSettings.js"></script>
+    <script src="js/settings/CanvasSettings.js"></script>
+    <script src="js/Menu.js"></script>
+    <script src="js/game/Game.js"></script>
+    <script src="js/game/Player.js"></script>
+    <script src="js/game/Bonus.js"></script>
+    <script src="js/game/Tile.js"></script>
+    <script src="js/game/Fire.js"></script>
+    <script src="js/game/Bomb.js"></script>
+    <script src="js/messaging/MessageBroker.js"></script>
+    <script src="js/messaging/ServerProxy.js"></script>
+    <script src="js/InputEngine.js"></script>
+    <script src="js/GameEngine.js"></script>
+    <script src="js/MatchMaker.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body onload="gGameEngine.load()">
+    <div class="container">
+        <div class="page-header">
+        </div>
+        <div id="game">
+            <canvas id="canvas" style="background-color: gray;"></canvas>
+        </div>
+        <h3>You have only 10 seconds to transmit the bomb, be fast!</h3>
+        <ul>
+            <li><strong>arrow keys</strong> - move</li>
+            <li><strong>spacebar</strong> - jump</li>
+            <li><strong>q</strong> - plant bomb</li>
+        </ul>
+        <hr>
+
+        <div class="footer">
+            <div class="alert alert-success">
+                <img src="img/github.png" width="32">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
