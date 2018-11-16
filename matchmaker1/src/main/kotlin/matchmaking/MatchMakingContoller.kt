@@ -35,8 +35,8 @@ class MatchMakingContoller {
         }
         else -> {
             val game = freegammes.keys().nextElement()
-            freegammes.remove(game)
             freegammes[game] = freegammes[game]!! + 1
+            freegammes.remove(game)
             ToServer.start(game)
             ResponseEntity.ok(game)
         }

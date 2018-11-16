@@ -3,6 +3,7 @@ package matchmaking
 import com.kohttp.dsl.httpPost
 import com.kohttp.ext.EagerResponse
 import com.kohttp.ext.eager
+import okhttp3.RequestBody
 import util.logger
 
 class ToServer {
@@ -13,20 +14,11 @@ class ToServer {
         fun create(): EagerResponse {
             val log = logger()
             log.info("jopa")
-            /*return httpPost {
-                host = HOST
-                port = PORT
-                path = "/game/create"
-            }.eager()*/
             return httpPost {
                 host = HOST
                 port = PORT
                 path = "/game/create"
-                body {
-                    form {
-                        "name" to "name"
-                    }
-                }
+                body = RequestBody.create(null, byteArrayOf(0))
             }.eager()
         }
 /*

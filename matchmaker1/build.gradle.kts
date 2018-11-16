@@ -7,7 +7,7 @@ group = "qwe"
 version = "1.0-SNAPSHOT"
 
 plugins {
-    val ktVersion = "1.2.71"
+    val ktVersion = "1.3.0"
     kotlin("jvm") version ktVersion
 
     // spring-related
