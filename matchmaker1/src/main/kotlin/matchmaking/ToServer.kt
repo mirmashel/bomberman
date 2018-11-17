@@ -12,8 +12,7 @@ class ToServer {
         private const val PORT = 8080
 
         fun create(): EagerResponse {
-            val log = logger()
-            log.info("jopa")
+
             return httpPost {
                 host = HOST
                 port = PORT
