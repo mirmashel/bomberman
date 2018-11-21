@@ -15,8 +15,7 @@ import java.util.concurrent.ConcurrentLinkedDeque
         path = ["/matchmaking"]
 )
 class MatchMakingContoller {
-    val freegammes: ConcurrentHashMap<String, Int> = ConcurrentHashMap() // id's
-    val games: ConcurrentLinkedDeque<String> = ConcurrentLinkedDeque<String>()
+    val games: ConcurrentLinkedDeque<String> = ConcurrentLinkedDeque()
     val log = logger()
     @RequestMapping(
             path = ["/join"],
@@ -24,26 +23,6 @@ class MatchMakingContoller {
     )
     fun join(@RequestParam("name") name: String): ResponseEntity<String> = joinToGame1(name)
 
-    fun joinToGame(name: String): ResponseEntity<String> = when {
-        freegammes.isEmpty() -> {
-            val gameReq = ToServer.create()
-            log.info("${gameReq.code}")
-            if (gameReq.code != 200)
-                ResponseEntity.badRequest().body("Unable to join to server")
-            else {
-                freegammes[gameReq.body!!] = 1
-                ResponseEntity.ok("alo")
-                ResponseEntity.ok("${gameReq.body}")
-            }
-        }
-        else -> {
-            val game = freegammes.keys().nextElement()
-            freegammes[game] = freegammes[game]!! + 1
-            freegammes.remove(game)
-            ToServer.start(game)
-            ResponseEntity.ok(game)
-        }
-    }
 
     fun joinToGame1(name: String): ResponseEntity<String> = when {
         games.isEmpty() -> {
