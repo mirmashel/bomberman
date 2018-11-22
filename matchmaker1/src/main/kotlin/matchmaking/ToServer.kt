@@ -11,15 +11,16 @@ class ToServer {
         private const val HOST = "localhost"
         private const val PORT = 8080
 
-        fun create(): EagerResponse {
-
-            return httpPost {
+        fun create(players: Int): EagerResponse = httpPost {
                 host = HOST
                 port = PORT
                 path = "/game/create"
-                body = RequestBody.create(null, byteArrayOf(0))
+                body {
+                    form {
+                        "players" to players
+                    }
+                }
             }.eager()
-        }
 /*
     fun connect(name: String, gameId: String) = httpPost {
         host = HOST
