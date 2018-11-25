@@ -1,6 +1,7 @@
 package io.rybalkinsd.kotlinbootcamp.game
 
 
+import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Tickable
 import io.rybalkinsd.kotlinbootcamp.util.logger
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
