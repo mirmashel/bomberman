@@ -10,3 +10,7 @@ enum class Topic {
     POSSESS,
     FINISH
 }
+
+
+
+data class Action(var topic: Topic, var data: Direction)

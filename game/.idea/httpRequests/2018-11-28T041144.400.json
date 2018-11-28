@@ -1,0 +1,7 @@
+{
+  "timestamp": "2018-11-28T13:11:44.624+0000",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Required int parameter 'players' is not present",
+  "path": "/game/create"
+}

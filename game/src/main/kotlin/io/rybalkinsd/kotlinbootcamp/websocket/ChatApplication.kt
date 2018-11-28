@@ -18,8 +18,7 @@ import java.util.concurrent.atomic.AtomicLong
 data class User(val id: Long, val name: String)
 data class Message(val msgType: String, val data: Any)
 
-class ChatHandler : TextWebSocketHandler() {
-
+class ChatHandler: TextWebSocketHandler() {
     val connections = HashMap<WebSocketSession, User>()
     var uids = AtomicLong(0)
 
@@ -53,6 +52,7 @@ class ChatHandler : TextWebSocketHandler() {
     fun broadcast(msg: Message) = connections.forEach { emit(it.key, msg) }
     fun broadcastToOthers(me: WebSocketSession, msg: Message) = connections.filterNot { it.key == me }.forEach { emit(it.key, msg) }
 }
+/*
 
 @Configuration
 @EnableWebSocket
@@ -71,4 +71,4 @@ class ChatApplication
 
 fun main(args: Array<String>) {
     runApplication<ChatApplication>(*args)
-}
+}*/

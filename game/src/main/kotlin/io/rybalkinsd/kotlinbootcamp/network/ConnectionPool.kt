@@ -5,12 +5,10 @@ import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
 import java.util.concurrent.ConcurrentHashMap
 
-
-
 class ConnectionPool {
     private val connections = ConcurrentHashMap<WebSocketSession, String>()
 
-    fun send(session: WebSocketSession,msg: String) {
+    fun send(session: WebSocketSession, msg: String) {
         if (session.isOpen) {
             session.sendMessage(TextMessage(msg))
         }
