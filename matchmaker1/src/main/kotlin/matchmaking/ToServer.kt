@@ -4,12 +4,13 @@ import com.kohttp.dsl.httpPost
 import com.kohttp.ext.EagerResponse
 import com.kohttp.ext.eager
 import okhttp3.RequestBody
+import org.springframework.http.StreamingHttpOutputMessage
 import util.logger
 
 class ToServer {
     companion object {
         private const val HOST = "localhost"
-        private const val PORT = 8080
+        private const val PORT = 8090
 
         fun create(players: Int): EagerResponse = httpPost {
                 host = HOST
@@ -37,12 +38,19 @@ class ToServer {
         fun start(gameId: String) = httpPost {
             host = HOST
             port = PORT
-            path = "/game/connect"
+            path = "/game/start"
             body {
                 form {
                     "gameId" to gameId
                 }
             }
         }.eager()
+
+        fun reload() = httpPost {
+            host = HOST
+            port = PORT
+            path = "/game/reload"
+            body = RequestBody.create(null, byteArrayOf(0))
+        }
     }
 }
