@@ -4,5 +4,5 @@ import io.rybalkinsd.kotlinbootcamp.game.GameField
 import io.rybalkinsd.kotlinbootcamp.objects.TileType
 
 interface Destructable {
-    fun destroy(field: GameField, xPos: Int, yPos: Int)
+    fun destroy(xPos: Int, yPos: Int)
 }

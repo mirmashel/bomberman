@@ -41,7 +41,7 @@ class Ticker {
 
     companion object {
         private val log = logger()
-        private const val FPS = 60
+        const val FPS = 60
         private const val FRAME_TIME = (1000 / FPS).toLong()
     }
 
