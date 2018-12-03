@@ -10,9 +10,10 @@ import java.util.concurrent.locks.LockSupport
 class Ticker {
     private val tickables = ConcurrentSkipListSet<Tickable>()
     var tickNumber: Long = 0
+    var isEnded = false
 
     fun gameLoop() {
-        while (!Thread.currentThread().isInterrupted) {
+        while (!Thread.currentThread().isInterrupted && !isEnded) {
             val started = System.currentTimeMillis()
             act(FRAME_TIME)
             val elapsed = System.currentTimeMillis() - started

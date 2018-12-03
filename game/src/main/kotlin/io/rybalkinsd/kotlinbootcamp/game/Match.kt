@@ -11,14 +11,13 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.concurrent.thread
 import kotlin.random.Random
 
-class Match(val id: String) : Tickable {
+class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     var field = GameField(length, height)
-    private val inputQueue = ConcurrentLinkedQueue<RawData>()
+    val inputQueue = ConcurrentLinkedQueue<RawData>()
     private var outputQueue = ConcurrentLinkedQueue<Json>()
-    private var numberOfPlayers = 0
-    private val players = mutableMapOf<String, Player>()
+    val players = mutableMapOf<String, Player>()
     val tickables = Ticker()
-    private val connection = ConnectionPool()
+    val connections = ConnectionPool()
 
     fun findPlayer(x: Int, y: Int): Player? {
         players.values.forEach {
@@ -39,7 +38,7 @@ class Match(val id: String) : Tickable {
             )
         )
         rand %= 4
-        numberOfPlayers++
+       // numberOfPlayers++
     }
 
     fun removePlayer(name: String) = players.remove(name)
@@ -47,14 +46,16 @@ class Match(val id: String) : Tickable {
     override fun tick(elapsed: Long) {
         parseInput()
         parseOutput()
-        if (players.size <= 1) {
-            connection.broadcast(Topic.END_MATCH.toJson())
+        if (numberOfPlayers != 1 && players.size <= 1) {
+            connections.broadcast(Topic.END_MATCH.toJson())
+            tickables.isEnded = true
         }
+
     }
 
     fun parseOutput() {
         while (!outputQueue.isEmpty()) {
-            connection.broadcast(outputQueue.poll().toJson())
+            connections.broadcast(outputQueue.poll().toJson())
         }
     }
 

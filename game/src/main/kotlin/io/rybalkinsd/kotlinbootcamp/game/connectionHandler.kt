@@ -1,10 +1,6 @@
 package io.rybalkinsd.kotlinbootcamp.game
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.rybalkinsd.kotlinbootcamp.network.Broker
-import io.rybalkinsd.kotlinbootcamp.network.ConnectionPool
-import io.rybalkinsd.kotlinbootcamp.websocket.Message
-import io.rybalkinsd.kotlinbootcamp.websocket.User
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
@@ -12,12 +8,10 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.handler.TextWebSocketHandler
-import sun.security.ec.ECDSASignature
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentLinkedQueue
 
 
-data class RawData(val name: String, val action: String)
+/*data class RawData(val name: String, val action: String)
 
 class Match(val gameId: String, val numberofPlayers: Int) {
     val connections = ConnectionPool()
@@ -30,7 +24,7 @@ class Match(val gameId: String, val numberofPlayers: Int) {
     fun stop() {
         return
     }
-}
+}*/
 
 class ConnectionHandler : TextWebSocketHandler() {
     companion object {
@@ -57,7 +51,7 @@ class ConnectionHandler : TextWebSocketHandler() {
         when (json.get("type").asText()) {
             "connect" -> {// name gameId
                 val match = matches[json.get("gameId").asText()]!!
-                match.players += match.connections.getPlayer(session!!)!!
+                match.addPlayer(match.connections.getPlayer(session!!)!!)
                 players[json.get("name").asText()] = matches[json.get("gameId").asText()]!!
 
                 /*broadcast(Message("say", json.get("data").asText()))
