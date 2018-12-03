@@ -1,6 +1,7 @@
 package io.rybalkinsd.kotlinbootcamp.game
 
 
+import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Tickable
 import io.rybalkinsd.kotlinbootcamp.util.logger
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
@@ -40,7 +41,7 @@ class Ticker {
 
     companion object {
         private val log = logger()
-        private const val FPS = 60
+        const val FPS = 60
         private const val FRAME_TIME = (1000 / FPS).toLong()
     }
 
