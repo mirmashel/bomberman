@@ -1,6 +1,7 @@
 package io.rybalkinsd.kotlinbootcamp.game
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.rybalkinsd.kotlinbootcamp.util.logger
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketSession
@@ -27,6 +28,7 @@ class Match(val gameId: String, val numberofPlayers: Int) {
 }*/
 
 class ConnectionHandler : TextWebSocketHandler() {
+    val log = logger()
     companion object {
         val players = ConcurrentHashMap<String, Match>()
         val matches = ConcurrentHashMap<String, Match>()
@@ -48,8 +50,10 @@ class ConnectionHandler : TextWebSocketHandler() {
         val json = ObjectMapper().readTree(message?.payload)
         // {type: "connect/action", gameId: "gameId/msg"}
 
+        log.info(json.asText())
         when (json.get("type").asText()) {
             "connect" -> {// name gameId
+                log.info("${json.get("name").asText()} connected")
                 val match = matches[json.get("gameId").asText()]!!
                 match.addPlayer(match.connections.getPlayer(session!!)!!)
                 players[json.get("name").asText()] = matches[json.get("gameId").asText()]!!

@@ -1,3 +1,4 @@
+
 package io.rybalkinsd.kotlinbootcamp
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
