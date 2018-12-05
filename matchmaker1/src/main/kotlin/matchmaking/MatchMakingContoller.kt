@@ -1,6 +1,6 @@
 package matchmaking
 
-// import org.springframework.http.MediaType
+//import org.springframework.http.MediaType
 import dao.UserDao
 import dao.Users
 import org.springframework.http.ResponseEntity
@@ -24,7 +24,6 @@ import org.springframework.http.MediaType
 )
 class MatchMakingContoller {
     val b = DbConnector
-    var ids: Int = 0
     val gamesFor2: ConcurrentLinkedDeque<String> = ConcurrentLinkedDeque()
     val gamesFor4: ConcurrentHashMap<String, Int> = ConcurrentHashMap()
     val log = logger()
@@ -39,7 +38,9 @@ class MatchMakingContoller {
             method = [RequestMethod.POST]
     )
     fun join(@RequestParam("name") name: String, @RequestParam("players") players: String): ResponseEntity<String> {
+        println("$name $players")
         return when(players) {
+
             "1" -> joinToGame1(name)
             "2" -> joinToGame2(name)
             "4" -> joinToGame4(name)
@@ -112,7 +113,6 @@ class MatchMakingContoller {
         if (name.length > 20) return ResponseEntity.badRequest().body("Name is too long")
         if (password.isEmpty()) return ResponseEntity.badRequest().body("password is too short")
         if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
-        println("$name $password")
         val a = UserDao()
         if (a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
             return ResponseEntity.badRequest().body("User with this name doesn't exist")
@@ -135,8 +135,7 @@ class MatchMakingContoller {
         if (password.isEmpty()) return ResponseEntity.badRequest().body("password is too short")
         if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
 
-        val usr = User(ids++, name, 0, password)
-        println("$name $password")
+        val usr = User( name, 0, password)
         val a = UserDao()
         if (!a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
             return ResponseEntity.badRequest().body("User with this name already exists")

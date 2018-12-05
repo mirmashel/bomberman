@@ -35,6 +35,7 @@ dependencies {
     compile("org.jetbrains.exposed", "exposed", "0.11.2")
     compile(spring("web"))
     compile(spring("actuator"))
+    compile(spring("websocket"))
     runtimeOnly("org.postgresql", "postgresql", "42.2.2")
 
     testCompile("junit", "junit", "4.12")

@@ -11,12 +11,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import model.toUser
 
 class UserDao : Dao<User> {
-    override fun findById(id: Int) = transaction {
-        Users.select { Users.id eq id }
-            .firstOrNull()
-            ?.toUser()
-            ?: throw IllegalStateException("User with $id not found in database")
-    }
     override val all: List<User>
     get() = transaction {
         Users.selectAll()
@@ -31,7 +25,6 @@ class UserDao : Dao<User> {
     override fun insert(t: User) {
         transaction {
             Users.insert {
-                it[id] = t.id
                 it[login] = t.login
                 it[score] = t.score
                 it[password] = t.password

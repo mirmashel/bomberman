@@ -22,5 +22,4 @@ interface Dao<T> {
      * SELECT * from ... WHERE id=
      * @return Optional.empty() if nothing found
      */
-    fun findById(id: Int): T
 }
