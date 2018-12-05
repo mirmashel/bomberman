@@ -15,10 +15,10 @@ class Broker(private val connectionPool: ConnectionPool) {
         connectionPool.send(session!!, message)
     }
 
-    fun broadcast(topic: Topic, data: Any) {
+/*    fun broadcast(topic: Topic, data: Any) {
         val message = Message(topic, data.toJson()).toJson()
         connectionPool.broadcast(message)
-    }
+    }*/
 
     companion object {
         private val log = logger()

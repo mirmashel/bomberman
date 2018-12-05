@@ -1,5 +1,7 @@
 package io.rybalkinsd.kotlinbootcamp.game
 
+import io.rybalkinsd.kotlinbootcamp.network.Actions
+import io.rybalkinsd.kotlinbootcamp.network.Topic
 import io.rybalkinsd.kotlinbootcamp.objects.Bomb
 import io.rybalkinsd.kotlinbootcamp.objects.Box
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Bonus
@@ -16,48 +18,39 @@ class Player(val game: Match, val name: String, var xPos: Int, var yPos: Int) {
     fun kill() {
         isAlive = 0
         game.removePlayer(name)
+        game.addToOutputQueue(Topic.MOVE,
+                "\"type\":\"Pawn\",\"position\":{\"y\":$yPos,\"x\":$xPos},\"alive\":$isAlive,\"direction\":\"")
     }
 
-    fun moveUp() {
-        if (!game.field[xPos, yPos + 1].isImpassable()) {
-            yPos++
+    fun move(a: Actions) {
+        var newX = xPos
+        var newY = yPos
+        when (a) {
+            Actions.MOVE_UP -> newY++
+            Actions.MOVE_LEFT -> newX--
+            Actions.MOVE_DOWN -> newY++
+            Actions.MOVE_RIGHT -> newX++
+            else -> {
+            }
+        }
+        if (!game.field[newX, newY].isImpassable()) {
+            xPos = newX
+            yPos = newY
+            game.addToOutputQueue(Topic.MOVE,
+                    "\"type\":\"Pawn\",\"position\":{\"y\":$yPos,\"x\":$xPos},\"alive\":$isAlive,\"direction\":\"$a")
         }
         if (game.field[xPos, yPos].isBonus()) {
             (game.field[xPos, yPos] as Bonus).pickUp(this)
         }
-    }
 
-    fun moveDown() {
-        if (!game.field[xPos, yPos - 1].isImpassable()) {
-            yPos--
-        }
-        if (game.field[xPos, yPos].isBonus()) {
-            (game.field[xPos, yPos] as Bonus).pickUp(this)
-        }
-    }
-
-    fun moveLeft() {
-        if (!game.field[xPos + 1, yPos].isImpassable()) {
-            xPos++
-        }
-        if (game.field[xPos, yPos].isBonus()) {
-            (game.field[xPos, yPos] as Bonus).pickUp(this)
-        }
-    }
-
-    fun moveRight() {
-        if (!game.field[xPos - 1, yPos].isImpassable()) {
-            xPos--
-        }
-        if (game.field[xPos, yPos].isBonus()) {
-            (game.field[xPos, yPos] as Bonus).pickUp(this)
-        }
     }
 
     fun plantBomb() {
         if (bombsPlanted < maxNumberOfBombs) {
             game.field[xPos, yPos] = Bomb(this, game, xPos, yPos)
             game.tickables.registerTickable(Bomb(this, game, xPos, yPos))
+            game.addToOutputQueue(Topic.PLANT_BOMB,
+                    "\"type\":\"Bomb\",\"position\":{\"y\":$yPos,\"x\":$xPos}")
         }
     }
 }

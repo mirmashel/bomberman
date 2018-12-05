@@ -7,5 +7,6 @@ enum class TileType {
     FLOOR,
     SPEED_BONUS,
     EXPLOSION_BONUS,
-    BOMB_BONUS
+    BOMB_BONUS,
+    FIRE
 }
