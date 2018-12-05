@@ -1,6 +1,8 @@
 package matchmaking
 
-// import org.springframework.http.MediaType
+//import org.springframework.http.MediaType
+import dao.UserDao
+import dao.Users
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
@@ -10,27 +12,35 @@ import util.logger
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedDeque
 import javax.annotation.PostConstruct
+import db.DbConnector
+import model.User
+import org.jetbrains.exposed.sql.Op
+import org.springframework.boot.autoconfigure.AutoConfigureBefore
+import org.springframework.http.MediaType
 
 @Controller
 @RequestMapping(
         path = ["/matchmaker"]
 )
 class MatchMakingContoller {
+    val b = DbConnector
     val gamesFor2: ConcurrentLinkedDeque<String> = ConcurrentLinkedDeque()
     val gamesFor4: ConcurrentHashMap<String, Int> = ConcurrentHashMap()
     val log = logger()
 
-    @PostConstruct
-    fun rel() {
-        ToServer.reload() // при запуске матчмэйкера удалить все игры
-    }
+//    @PostConstruct
+//    fun rel() {
+//        ToServer.reload() // при запуске матчмэйкера удалить все игры
+//    }
 
     @RequestMapping(
             path = ["/join"],
             method = [RequestMethod.POST]
     )
     fun join(@RequestParam("name") name: String, @RequestParam("players") players: String): ResponseEntity<String> {
+        println("$name $players")
         return when(players) {
+
             "1" -> joinToGame1(name)
             "2" -> joinToGame2(name)
             "4" -> joinToGame4(name)
@@ -91,5 +101,46 @@ class MatchMakingContoller {
             }
             ResponseEntity.ok(game)
         }
+    }
+
+    @RequestMapping(
+        path = ["/login"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
+    )
+        fun login(@RequestParam("name") name: String, @RequestParam("password") password: String): ResponseEntity<String> {
+        if (name.isEmpty()) return  ResponseEntity.badRequest().body("Name is too short")
+        if (name.length > 20) return ResponseEntity.badRequest().body("Name is too long")
+        if (password.isEmpty()) return ResponseEntity.badRequest().body("password is too short")
+        if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
+        val a = UserDao()
+        if (a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
+            return ResponseEntity.badRequest().body("User with this name doesn't exist")
+        }
+        var curUsr = a.getAllWhere(Op.build { Users.login eq name})
+        if (password != curUsr[0].password) {
+            return ResponseEntity.badRequest().body("Invalid password")
+        }
+        return ResponseEntity.ok(name)
+        }
+
+    @RequestMapping(
+        path = ["/register"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
+    )
+    fun register(@RequestParam("name") name: String, @RequestParam("password") password: String): ResponseEntity<String> {
+        if (name.isEmpty()) return  ResponseEntity.badRequest().body("Name is too short")
+        if (name.length > 20) return ResponseEntity.badRequest().body("Name is too long")
+        if (password.isEmpty()) return ResponseEntity.badRequest().body("password is too short")
+        if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
+
+        val usr = User( name, 0, password)
+        val a = UserDao()
+        if (!a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
+            return ResponseEntity.badRequest().body("User with this name already exists")
+        }
+        a.insert(usr)
+        return ResponseEntity.ok(name)
     }
 }
