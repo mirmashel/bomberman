@@ -51,8 +51,8 @@
 </div>
 
 <script>
-    //var webSocket = new WebSocket("ws://" + location.hostname + ":" + location.port + "/chat");
-    var webSocket = new SockJS('/chat');
+    var webSocket = new SockJS("http://localhost:8090/connect");
+    //var webSocket = new WebSocket('ws://localhost:8090/connect');
     webSocket.onmessage = function (msg) {
         receiveMsg(JSON.parse(msg.data))
     };
@@ -60,10 +60,10 @@
         alert("Disconnected from server");
     };
     webSocket.onopen = function () {
+        console.log("alo");
         var name = "";
-        while (name === "") name = prompt("Enter your name");
-        named = name;
-        sendMessage("login", name);
+
+        webSocket.send(JSON.stringify({type: "connect", name: "ee", gameId: "1"}));
     };
     $("#send").click(function () {
         sendMessage("say", $("#msg").val());

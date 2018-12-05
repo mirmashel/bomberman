@@ -13,7 +13,7 @@ class Player(val game: Match, val name: String, var xPos: Int, var yPos: Int) {
     var speed = 1
     var maxNumberOfBombs = 1
     var bombsPlanted = 0
-    private var isAlive = 1
+    var isAlive = 1
 
     fun kill() {
         isAlive = 0

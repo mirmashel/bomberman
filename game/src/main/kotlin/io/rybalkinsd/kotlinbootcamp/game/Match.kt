@@ -62,7 +62,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     fun sendPlayerStatus() = players.values.forEach {
         addToOutputQueue(Topic.MOVE,
                 "\"type\":\"Pawn\",\"position\":{\"y\":${it.yPos},\"x\":${it.xPos}}," +
-                        "\"alive\":$it.isAlive,\"direction\":\"\"")
+                        "\"alive\":${it.isAlive},\"direction\":\"\"")
     }
 
     fun removePlayer(name: String) = players.remove(name)
