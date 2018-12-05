@@ -10,7 +10,7 @@ import util.logger
 class ToServer {
     companion object {
         private const val HOST = "localhost"
-        private const val PORT = 8090
+        private const val PORT = 8080
 
         fun create(players: Int): EagerResponse = httpPost {
                 host = HOST
