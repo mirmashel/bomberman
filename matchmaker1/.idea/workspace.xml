@@ -2,6 +2,66 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1cc1b0e-3268-4879-a3db-412a60a71b1a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__joda_time_joda_time_2_9_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jetbrains_exposed_exposed_0_11_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_postgresql_postgresql_42_2_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/Dao.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/UserDao$all$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/UserDao$findById$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/UserDao$getAllWhere$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/UserDao$insert$1$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/UserDao$insert$1.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/UserDao.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/dao/Users.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/db/DbConnector.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/model/ModelExtKt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/classes/model/User.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dao/Dao.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dao/UserDao.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/dao/database.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/db/DbConnector.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/model/model.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/model/modelExt.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/bootstrap.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/betty.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/betty2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/bomb-carried.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/bomb.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/bonus_bomb.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/bonus_explosion.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/bonus_speed.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/bonuses.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/crateWood.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/fire.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/george.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/github.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/tile_grass.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/tile_wall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/img/tile_wood.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/GameEngine.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/InputEngine.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/Login.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/MatchMaker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/Menu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/external/easeljs-NEXT.combined.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/external/jquery-3.3.1.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/external/preloadjs-NEXT.combined.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/game/Bomb.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/game/Bonus.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/game/Fire.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/game/Game.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/game/Player.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/game/Tile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/messaging/MessageBroker.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/messaging/ServerProxy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/settings/CanvasSettings.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/js/settings/ClusterSettings.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.8/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
@@ -9,8 +69,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/modules/wqe_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/wqe_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/META-INF/wqe_main.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/matchmaking/MatchMakingContoller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/META-INF/wqe_main.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/META-INF/wqe_main.kotlin_module" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/matchmaking/MatchMakingContoller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/matchmaking/MatchMakingContoller.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/matchmaking/ToServer$Companion$create$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/matchmaking/ToServer$Companion$create$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/matchmaking/ToServer$Companion$reload$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/matchmaking/ToServer$Companion$reload$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/classes/matchmaking/ToServer$Companion$start$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/matchmaking/ToServer$Companion$start$1.class" afterDir="false" />
@@ -80,7 +140,8 @@
           <entry key="project.open.time.152" value="1" />
           <entry key="project.open.time.49" value="1" />
           <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.63" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -105,7 +166,7 @@
           <entry key="html" value="2" />
           <entry key="java" value="1" />
           <entry key="js" value="3" />
-          <entry key="kt" value="14" />
+          <entry key="kt" value="15" />
           <entry key="kts" value="3" />
         </counts>
       </usages-collector>
@@ -116,21 +177,27 @@
           <entry key="HTML" value="2" />
           <entry key="JAVA" value="1" />
           <entry key="JavaScript" value="3" />
-          <entry key="Kotlin" value="17" />
+          <entry key="Kotlin" value="18" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/MatchMakingContoller.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="122" column="9" lean-forward="true" selection-start-line="122" selection-start-column="9" selection-end-line="122" selection-end-column="9" />
-              <folding>
-                <element signature="e#66#598#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1819">
+              <caret line="122" column="9" selection-start-line="122" selection-start-column="9" selection-end-line="122" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/ToServer.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="12" column="36" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -144,18 +211,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/Menu.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-731" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/css/style.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-816" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -627,8 +690,8 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="680" />
-    <option name="width" value="1938" />
-    <option name="height" value="1048" />
+    <option name="width" value="1939" />
+    <option name="height" value="1049" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -636,8 +699,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -737,6 +798,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -928,16 +991,18 @@
       <workItem from="1543651786848" duration="90000" />
       <workItem from="1543936884974" duration="313000" />
       <workItem from="1543937421045" duration="15350000" />
+      <workItem from="1544001742593" duration="230000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23743000" />
+    <option name="totallyTimeSpent" value="23973000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26040268" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2637584" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1019,39 +1084,15 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/Matchmaking.http" />
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/CORSFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#840#841#0" expanded="true" />
-            <element signature="e#889#890#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/CORSFilter.java" />
     <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/dao/MessageDao.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/dao/MessageDao.kt" />
     <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/app.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/ToServer.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="12" column="36" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -1116,20 +1157,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/MatchMakingContoller.kt">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="122" column="9" lean-forward="true" selection-start-line="122" selection-start-column="9" selection-end-line="122" selection-end-column="9" />
-          <folding>
-            <element signature="e#66#598#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="136">
+          <caret line="8" column="86" selection-start-line="8" selection-start-column="86" selection-end-line="8" selection-end-column="86" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816" />
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/Login.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -1138,16 +1174,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/index.html">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/Menu.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/ToServer.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="86" selection-start-line="8" selection-start-column="86" selection-end-line="8" selection-end-column="86" />
+        <state relative-caret-position="119">
+          <caret line="12" column="36" selection-start-line="12" selection-start-column="36" selection-end-line="12" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/Menu.js">
+    <entry file="file://$PROJECT_DIR$/src/main/kotlin/matchmaking/MatchMakingContoller.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-731" />
+        <state relative-caret-position="1819">
+          <caret line="122" column="9" selection-start-line="122" selection-start-column="9" selection-end-line="122" selection-end-column="9" />
+        </state>
       </provider>
     </entry>
   </component>
