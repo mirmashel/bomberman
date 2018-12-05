@@ -32,8 +32,9 @@ ServerProxy.prototype.setupMessaging = function() {
 // у WebSocketSession в Java имеется функция getURI() с помощью которого этот "Хвост" получается
 ServerProxy.prototype.connectToGameServer = function(gameId) {
     console.log(gClusterSettings.gameServerUrl());
-    this.socket = new WebSocket(gClusterSettings.gameServerUrl());
-    console.log("alo1");
+    //this.socket = new SockJS(gClusterSettings.gameServerUrl());
+    this.socket = new SockJS("http://localhost:8090/connect");
+    console.log(this.socket);
     var self = this;
     this.socket.onmessage = function (event) {
         var msg = JSON.parse(event.data);
@@ -44,7 +45,8 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
     };
 
     this.socket.onopen = function () {
-        this.socket.send(JSON.stringify({type: "connect", name: name, gameId: gameId}));
+        console.log("Ws connected");
+        this.send(JSON.stringify({topic: "connect", name: name, gameId: gameId}));
     };
 
     this.socket.onclose = function (event) {

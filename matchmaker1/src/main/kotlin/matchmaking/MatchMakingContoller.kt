@@ -17,6 +17,7 @@ import model.User
 import org.jetbrains.exposed.sql.Op
 import org.springframework.boot.autoconfigure.AutoConfigureBefore
 import org.springframework.http.MediaType
+import java.util.concurrent.ConcurrentLinkedQueue
 
 @Controller
 @RequestMapping(
@@ -27,6 +28,7 @@ class MatchMakingContoller {
     val gamesFor2: ConcurrentLinkedDeque<String> = ConcurrentLinkedDeque()
     val gamesFor4: ConcurrentHashMap<String, Int> = ConcurrentHashMap()
     val log = logger()
+    val players = ConcurrentLinkedQueue<String>()
 
     @PostConstruct
     fun rel() {
@@ -38,7 +40,7 @@ class MatchMakingContoller {
             method = [RequestMethod.POST]
     )
     fun join(@RequestParam("name") name: String, @RequestParam("players") players: String): ResponseEntity<String> {
-        println("$name $players")
+        log.info("$name $players")
         return when(players) {
 
             "1" -> joinToGame1(name)
@@ -54,6 +56,7 @@ class MatchMakingContoller {
         val gameReg = ToServer.create(1)
         log.info("${gameReg.code}")
         return if (gameReg.code != 200) {
+            players += name
             ResponseEntity.badRequest().body("Unable to create game")
         } else {
             ToServer.start(gameReg.body!!)
@@ -65,9 +68,10 @@ class MatchMakingContoller {
         gamesFor2.isEmpty() -> {
             val gameReq = ToServer.create(2)
             log.info("${gameReq.code}")
-            if (gameReq.code != 200)
+            if (gameReq.code != 200) {
+                players += name
                 ResponseEntity.badRequest().body("Unable to create game")
-            else {
+            } else {
                // log.info("Server id: ${gameReq.body}")
                 gamesFor2 += gameReq.body
                 ResponseEntity.ok("${gameReq.body}")
@@ -82,11 +86,15 @@ class MatchMakingContoller {
     }
 
     fun joinToGame4(name: String): ResponseEntity<String> = when {
+        name in players -> {
+            ResponseEntity.badRequest().body("already playing")
+        }
         gamesFor4.isEmpty() -> {
             val gameReq = ToServer.create(4)
-            if (gameReq.code != 200)
+            if (gameReq.code != 200){
+                players += name
                 ResponseEntity.badRequest().body("Unable to create game")
-            else {
+            } else {
                 // log.info("Server id: ${gameReq.body}")
                 gamesFor4[gameReq.body!!] = 1
                 ResponseEntity.ok("${gameReq.body}")
