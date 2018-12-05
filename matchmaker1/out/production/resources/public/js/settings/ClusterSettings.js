@@ -3,7 +3,7 @@ var ClusterSetting = function () {
         protocol: 'ws',
         host: 'localhost',
         port: '8090',
-        path: '/events/connect'
+        path: '/connect'
     };
 
     this.matchMaker = {
@@ -15,7 +15,7 @@ var ClusterSetting = function () {
 };
 
 ClusterSetting.prototype.gameServerUrl = function() {
-    return makeUrl(this.gameServer)
+    return makeUrl2(this.gameServer)
 };
 
 ClusterSetting.prototype.matchMakerUrl = function() {
@@ -24,6 +24,10 @@ ClusterSetting.prototype.matchMakerUrl = function() {
 
 function makeUrl(data) {
     return data['protocol'] + "://" + data['host'] + ":" + data['port'] + data['path']
+}
+
+function makeUrl2(data) {
+    return data['protocol'] + ":" + data['host'] + ":" + data['port'] + data['path']
 }
 
 var gClusterSettings = new ClusterSetting();

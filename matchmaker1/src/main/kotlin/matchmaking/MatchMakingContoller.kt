@@ -28,10 +28,10 @@ class MatchMakingContoller {
     val gamesFor4: ConcurrentHashMap<String, Int> = ConcurrentHashMap()
     val log = logger()
 
-//    @PostConstruct
-//    fun rel() {
-//        ToServer.reload() // при запуске матчмэйкера удалить все игры
-//    }
+    @PostConstruct
+    fun rel() {
+        ToServer.reload() // при запуске матчмэйкера удалить все игры
+    }
 
     @RequestMapping(
             path = ["/join"],
