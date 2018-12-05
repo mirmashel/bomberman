@@ -6,6 +6,7 @@ import io.rybalkinsd.kotlinbootcamp.objects.*
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.GameObject
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Tickable
 import io.rybalkinsd.kotlinbootcamp.util.toJson
+import java.lang.Math.abs
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.concurrent.thread
 import kotlin.random.Random
@@ -33,9 +34,10 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 this,
                 name,
                 startingPositions[rand].first,
-                startingPositions[rand++].second
+                startingPositions[rand].second
         )
         )
+        rand++
         rand %= 4
         // numberOfPlayers++
     }
@@ -43,7 +45,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     private fun sendGameField() {
         for (i in 0 until length) {
             for (j in 0 until height) {
-                var type = when (field[i, j]) {
+                val type = when (field[j, i]) {
                     is Box -> "Wood"
                     is Wall -> "Wall"
                     is Floor -> "Floor"
@@ -51,7 +53,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 }
                 if (type != "") {
                     addToOutputQueue(Topic.REPLICA,
-                            "\"type\":\"$type\",\"position\":{\"y\":$j,\"x\":$i\")")
+                            "\"type\":\"$type\",\"position\":{\"y\":$i,\"x\":$j\")")
                 }
             }
         }
@@ -110,7 +112,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     companion object {
         const val length = 17
         const val height = 13
-        var rand = Random.nextInt() % 4
+        var rand = abs(Random.nextInt()) % 4
         val startingPositions = listOf(
                 Pair(1, 1), Pair(length - 1, 1),
                 Pair(1, height - 1), Pair(length - 1, height - 1)
