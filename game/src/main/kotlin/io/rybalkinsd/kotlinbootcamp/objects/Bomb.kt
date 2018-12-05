@@ -4,37 +4,46 @@ import io.rybalkinsd.kotlinbootcamp.game.GameField
 import io.rybalkinsd.kotlinbootcamp.game.Match
 import io.rybalkinsd.kotlinbootcamp.game.Player
 import io.rybalkinsd.kotlinbootcamp.game.Ticker
+import io.rybalkinsd.kotlinbootcamp.network.Topic
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Destructable
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.GameObject
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Tickable
 
 class Bomb(val owner: Player, val game: Match, private val xPos: Int, private val yPos: Int) :
-    Tickable, Destructable,
-    GameObject(TileType.BOMB) {
+        Tickable, Destructable,
+        GameObject(TileType.BOMB) {
     override fun destroy(xPos: Int, yPos: Int) {
         for (i in 1..owner.explosionSize) {
             game.findPlayer(xPos + i, yPos)?.kill()
             if (!explode(xPos + i, yPos)) {
                 break
             }
+            game.addToOutputQueue(Topic.REPLICA,
+                    "\"type\":\"Fire\",\"position\":{\"y\":$yPos,\"x\":${xPos + i}\")")
         }
         for (i in 1..owner.explosionSize) {
             game.findPlayer(xPos - i, yPos)?.kill()
             if (!explode(xPos - i, yPos)) {
                 break
             }
+            game.addToOutputQueue(Topic.REPLICA,
+                    "\"type\":\"Fire\",\"position\":{\"y\":$yPos,\"x\":${xPos - i}\")")
         }
         for (i in 1..owner.explosionSize) {
             game.findPlayer(xPos, yPos + i)?.kill()
             if (!explode(xPos, yPos + i)) {
                 break
             }
+            game.addToOutputQueue(Topic.REPLICA,
+                    "\"type\":\"Fire\",\"position\":{\"y\":${yPos + i},\"x\":$xPos\")")
         }
         for (i in 1..owner.explosionSize) {
             game.findPlayer(xPos, yPos - i)?.kill()
             if (!explode(xPos, yPos - i)) {
                 break
             }
+            game.addToOutputQueue(Topic.REPLICA,
+                    "\"type\":\"Fire\",\"position\":{\"y\":${yPos - i},\"x\":$xPos\")")
         }
     }
 
