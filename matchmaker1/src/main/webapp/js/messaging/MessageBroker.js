@@ -22,6 +22,15 @@ var MessageBroker = function () {
 //
 // msg при выводе в консоль должно выглядеть примерно так
 // "[{\"id\":383,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]"
+
+
+
+
+
+
+
+
+
 MessageBroker.prototype.handleReplica = function (msg) {
     var gameObjects = JSON.parse(msg.data);
     gGameEngine.game.gc(gameObjects);

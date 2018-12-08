@@ -24,6 +24,8 @@ var MessageBroker = function () {
 // "[{\"id\":383,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]"
 MessageBroker.prototype.handleReplica = function (msg) {
     var gameObjects = JSON.parse(msg.data);
+    console.log(gameObjects);
+
     gGameEngine.game.gc(gameObjects);
 };
 
@@ -127,16 +129,6 @@ MessageBroker.prototype.move = function (direction) {
 MessageBroker.prototype.plantBomb = function () {
     var template = {
         topic: "PLANT_BOMB",
-        data: {}
-    };
-
-    return JSON.stringify(template);
-};
-
-// Experimental
-MessageBroker.prototype.jump = function () {
-    var template = {
-        topic: "JUMP",
         data: {}
     };
 

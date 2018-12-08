@@ -34,6 +34,7 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
     this.socket = new WebSocket(gClusterSettings.gameServerUrl() + "?gameId=" + gameId + "&name=NKOHA");
     var self = this;
     this.socket.onmessage = function (event) {
+        console.log(event);
         var msg = JSON.parse(event.data);
         if (self.handler[msg.topic] === undefined) {
             return;
