@@ -6,7 +6,7 @@ import org.springframework.web.socket.WebSocketSession
 import java.util.concurrent.ConcurrentHashMap
 
 class ConnectionPool {
-    private val connections = ConcurrentHashMap<WebSocketSession, String>()
+    val connections = ConcurrentHashMap<WebSocketSession, String>()
 
     fun send(session: WebSocketSession, msg: String) {
         if (session.isOpen) {
@@ -15,7 +15,8 @@ class ConnectionPool {
     }
 
     fun broadcast(msg: String) {
-        connections.forEach { session, _ -> send(session, msg) }
+        connections.forEach { session, _ ->
+            send(session, msg) }
     }
 
     fun shutdown() {

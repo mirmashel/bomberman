@@ -1,20 +1,24 @@
 package io.rybalkinsd.kotlinbootcamp.game
 
 import com.kohttp.util.Json
+import com.sun.org.apache.xpath.internal.operations.Bool
 import io.rybalkinsd.kotlinbootcamp.network.*
 import io.rybalkinsd.kotlinbootcamp.objects.*
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.GameObject
 import io.rybalkinsd.kotlinbootcamp.objects.ObjectTypes.Tickable
+import io.rybalkinsd.kotlinbootcamp.util.logger
 import io.rybalkinsd.kotlinbootcamp.util.toJson
 import java.lang.Math.abs
+import java.lang.Thread.sleep
+import java.text.FieldPosition
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.concurrent.thread
 import kotlin.random.Random
 
 class Match(val id: String, val numberOfPlayers: Int) : Tickable {
-    var field = GameField(length, height)
+    var field = GameField(this, length, height)
     val inputQueue = ConcurrentLinkedQueue<RawData>()
-    private var outputQueue = ConcurrentLinkedQueue<Message>()
+    private var outputQueue = ConcurrentLinkedQueue<String>()
     val players = mutableMapOf<String, Player>()
     val tickables = Ticker()
     val connections = ConnectionPool()
@@ -29,40 +33,38 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     }
 
     fun addPlayer(name: String) {
-        players += Pair(
-                name, Player(
-                this,
-                name,
-                startingPositions[rand].first,
-                startingPositions[rand].second
-        )
-        )
+        players += Pair(name, Player( ids++, this, name, startingPositions[rand].first * mult, startingPositions[rand].second * mult))
         rand++
         rand %= 4
         // numberOfPlayers++
     }
 
     private fun sendGameField() {
-        for (i in 0 until length) {
+        for (i in 0 until length) { // Раскоментить
             for (j in 0 until height) {
-                val type = when (field[j, i]) {
+                val type = when (field[i, j]) {
                     is Box -> "Wood"
                     is Wall -> "Wall"
-                    is Floor -> "Floor"
                     else -> ""
                 }
                 if (type != "") {
-                    addToOutputQueue(Topic.REPLICA,
-                            "\"type\":\"$type\",\"position\":{\"y\":$i,\"x\":$j\")")
+                    var act = Item(ids++, type, Cords(j * mult, i * mult))
+                    //log.info(act.toJson())
+                   // var alo = "\"type\":\"$type\",position\":{\"y\":${i * 10},\"x\":$j\")"
+                    //connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
+                    addToOutputQueue(Topic.REPLICA, act.toJson())
+                    if (type == "Wood") {
+                        addToOutputQueue(Topic.REPLICA, act.toJson())
+                        field[i, j] = Floor()
+                    }
                 }
             }
         }
     }
 
     fun sendPlayerStatus() = players.values.forEach {
-        addToOutputQueue(Topic.MOVE,
-                "\"type\":\"Pawn\",\"position\":{\"y\":${it.yPos},\"x\":${it.xPos}}," +
-                        "\"alive\":${it.isAlive},\"direction\":\"\"")
+        val chel = Chel(it.id, "Pawn", Cords(it.yPos, it.xPos), it.isAlive, "IDLE")
+        addToOutputQueue(Topic.REPLICA, chel.toJson())
     }
 
     fun removePlayer(name: String) = players.remove(name)
@@ -70,6 +72,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     override fun tick(elapsed: Long) {
         parseInput()
         parseOutput()
+        sendPlayerStatus()
         if (numberOfPlayers != 1 && players.size <= 1) {
             addToOutputQueue(Topic.END_MATCH, "")
             tickables.isEnded = true
@@ -79,7 +82,9 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     private fun parseOutput() {
         while (!outputQueue.isEmpty()) {
-            connections.broadcast(outputQueue.poll().toJson())
+            var x = outputQueue.poll()
+            log.info(x)
+            connections.broadcast(x)
         }
     }
 
@@ -88,10 +93,10 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
             val curEntry = inputQueue.poll()
             val pl = players[curEntry.name] as Player
             when (curEntry.action) {
-                "MOVE_UP" -> pl.move(Actions.MOVE_UP)
-                "MOVE_DOWN" -> pl.move(Actions.MOVE_DOWN)
-                "MOVE_LEFT" -> pl.move(Actions.MOVE_LEFT)
-                "MOVE_RIGHT" -> pl.move(Actions.MOVE_RIGHT)
+                "UP" -> pl.move(Actions.MOVE_UP)
+                "DOWN" -> pl.move(Actions.MOVE_DOWN)
+                "LEFT" -> pl.move(Actions.MOVE_LEFT)
+                "RIGHT" -> pl.move(Actions.MOVE_RIGHT)
                 "PLANT_BOMB" -> pl.plantBomb()
                 else -> {
                 }
@@ -99,7 +104,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         }
     }
 
-    fun addToOutputQueue(topic: Topic, data: Any) = outputQueue.add(Message(topic, data.toJson()))
+    fun addToOutputQueue(topic: Topic, data: String) = outputQueue.add(Message(topic, data).toJson())
 
     fun start() {
         tickables.registerTickable(this)
@@ -110,12 +115,15 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     }
 
     companion object {
+        var ids = 0
+        var log = logger()
         const val length = 17
-        const val height = 13
+        const val height = 27
+        const val mult = 32
         var rand = abs(Random.nextInt()) % 4
         val startingPositions = listOf(
-                Pair(1, 1), Pair(length - 1, 1),
-                Pair(1, height - 1), Pair(length - 1, height - 1)
+                Pair(1, 1), Pair(length - 2, 1),
+                Pair(1, height - 2), Pair(length - 2, height - 2)
         )
     }
 }

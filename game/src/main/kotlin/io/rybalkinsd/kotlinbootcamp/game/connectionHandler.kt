@@ -38,12 +38,14 @@ class ConnectionHandler : TextWebSocketHandler() {
         fun addMatch(gameId: String, num: Int)
         {
             matches[gameId] = Match(gameId, num)
-            log.info("Matches " + matches.toString())
+            //log.info("Matches " + matches.toString())
         }
 
         fun startMatch(gameId: String) {
+            val match = matches[gameId]!!
             threads[gameId] = Thread {
-                matches[gameId]!!.start()
+                while (match.connections.connections.size < match.numberOfPlayers) {}
+                match.start()
             }
             threads[gameId]!!.start()
         }
@@ -53,7 +55,7 @@ class ConnectionHandler : TextWebSocketHandler() {
         val json = ObjectMapper().readTree(message?.payload)
         when (json.get("topic").asText()) {
             "connect" -> {// name gameId
-                log.info("${json.get("name").asText()} connected to ${json.get("gameId").asText()}")
+                log.info("${json.get("name").asText()} connected to game ${json.get("gameId").asText()}")
                 val match = matches[json.get("gameId").asText()]!!
                 match.addPlayer(json.get("name").asText())
                 match.connections.add(session!!, json.get("name").asText())
@@ -64,14 +66,14 @@ class ConnectionHandler : TextWebSocketHandler() {
                 val act = json.get("data").asText()
                 val match = players[websocks[session]]!!
                 val player = match.connections.getPlayer(session!!)!!
-                log.info("player $player moved ${json.get("data").get("direction").asText()}")
-                match.inputQueue += RawData(player, act)
+                log.info("player $player moved ${json.get("data").get("direction").asText()} in game ${match.id}")
+                match.inputQueue += RawData(player, json.get("data").get("direction").asText())
             }
-            "PLANT_BOMB" -> {/*
+            "PLANT_BOMB" -> {
                 val match = players[websocks[session]]!!
                 val player = match.connections.getPlayer(session!!)!!
                 log.info("player ${player} planted bomb}")
-                match.inputQueue += */
+                match.inputQueue += RawData(player, "PLANT_BOMB")
             }
         }
 

@@ -33,7 +33,7 @@ class RecieveFromMatchmaker {
             method = [RequestMethod.POST]
     )
     fun start(@RequestParam("gameId") gameId: String): ResponseEntity<String> {
-       // ConnectionHandler.startMatch(gameId)
+        ConnectionHandler.startMatch(gameId)
         log.info("Game $gameId started")
         return ResponseEntity.ok(gameId)
     }
@@ -52,6 +52,5 @@ class RecieveFromMatchmaker {
         ConnectionHandler.websocks.clear()
         ConnectionHandler.threads.clear()
         ConnectionHandler.players.clear()
-        ids = AtomicInteger(0)
     }
 }
