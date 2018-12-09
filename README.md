@@ -1,1 +1,1 @@
-# bomberman
+# bomberman matchmaker + frontend
