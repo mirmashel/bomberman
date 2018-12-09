@@ -1,6 +1,4 @@
-import io.rybalkinsd.kotlinbootcamp.game.Match
-import io.rybalkinsd.kotlinbootcamp.objects.TileType
-import io.rybalkinsd.kotlinbootcamp.util.toJson
+import io.game.Match
 import org.junit.Test
 
 class Test {
