@@ -4,7 +4,6 @@ import io.game.Cords
 import io.game.Match
 import io.game.Obj
 import io.game.PowerUp
-import io.network.Topic
 import io.objects.ObjectTypes.BonusType
 import io.objects.ObjectTypes.Destructable
 import io.objects.ObjectTypes.GameObject
@@ -26,7 +25,7 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
         game.addToOutputQueue(Obj(id, "Wood", Cords(yPos * Match.mult, xPos * Match.mult)).json())
         val b = game.field[xPos, yPos]
         if (b is Bonus) {
-          //  logger().info("bonus id ${b.id} created at $xPos $yPos")
+            // logger().info("bonus id ${b.id} created at $xPos $yPos")
             game.addToOutputQueue(PowerUp(b.id, "Bonus",
                     Cords(yPos * Match.mult, xPos * Match.mult),
                     b.type.name).toJson())

@@ -6,7 +6,6 @@ import io.game.Player
 import io.game.PowerUp
 import io.objects.ObjectTypes.BonusType
 import io.objects.ObjectTypes.GameObject
-import io.util.logger
 import io.util.toJson
 
 class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : GameObject(TileType.BONUS) {
@@ -19,7 +18,7 @@ class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : Game
             else -> {
             }
         }
-        //logger().info("bonus id $id picked up")
+        // logger().info("bonus id $id picked up")
         game.addToOutputQueue(PowerUp(id, "Bonus",
                 Cords(y * Match.mult, x * Match.mult),
                 type.name).toJson())

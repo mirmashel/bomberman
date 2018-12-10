@@ -5,9 +5,6 @@ import io.network.ConnectionPool
 import io.network.Message
 import io.network.Topic
 import io.objects.Box
-import io.objects.Floor
-import io.network.*
-import io.objects.*
 import io.objects.ObjectTypes.Tickable
 import io.objects.Wall
 import io.util.logger
@@ -47,7 +44,6 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     private fun sendGameField() {
         for (i in 0 until length) {
             for (j in 0 until height) {
-                val id: Int
                 val type = when (field[i, j]) {
                     is Box -> "Wood"
                     is Wall -> "Wall"
@@ -55,13 +51,13 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 }
                 if (type != "") {
                     val act = Obj(field[i, j].id, type, Cords(j * mult, i * mult))
-                    //log.info(act.toJson())
+                    // log.info(act.toJson())
                     // var alo = "\"type\":\"$type\",position\":{\"y\":${i * 10},\"x\":$j\")"
-                    //connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
+                    // connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
                     addToOutputQueue(act.toJson())
-                    if (type == "Wood") { //delete
-                        //addToOutputQueue(act.toJson())
-                        //field[i, j] = Floor()
+                    if (type == "Wood") { // delete
+                        // addToOutputQueue(act.toJson())
+                        // field[i, j] = Floor()
                     }
                 }
             }
@@ -78,12 +74,11 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     override fun tick(elapsed: Long) {
         parseInput()
         parseOutput()
-        //sendPlayerStatus()
+        // sendPlayerStatus()
         if (numberOfPlayers != 1 && players.size <= 1) {
-            //addToOutputQueue(Topic.END_MATCH, "")
+            // addToOutputQueue(Topic.END_MATCH, "")
             tickables.isEnded = true
         }
-
     }
 
     private fun parseOutput() {
@@ -92,8 +87,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
             //log.info(x)
             connections.broadcast(x)
         }*/
-        var x= outputQueue.toJson()
-       // log.info(x)
+        // log.info(x)
         connections.broadcast(Message(Topic.REPLICA, outputQueue.toJson()).toJson())
         outputQueue.clear()
     }

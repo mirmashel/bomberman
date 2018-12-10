@@ -41,6 +41,15 @@ dependencies {
     ktlint("com.github.shyiko", "ktlint", "0.28.0")
 }
 
+val fatJar = task("fatJar", type = Jar::class) {
+    baseName = "${project.name}-fat"
+    manifest {
+        attributes["Main-Class"] = "io.MainKt"
+    }
+    from(configurations.runtime.map({ if (it.isDirectory) it else zipTree(it) }))
+    with(tasks["jar"] as CopySpec)
+}
+
 tasks {
     val ktlint by creating(JavaExec::class) {
         group = "verification"
@@ -52,6 +61,9 @@ tasks {
 
     "check" {
         dependsOn(ktlint)
+    }
+    "build" {
+        dependsOn(fatJar)
     }
 }
 

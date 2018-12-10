@@ -3,7 +3,6 @@ package io.network
 import io.util.logger
 import io.util.toJson
 
-
 class Broker(private val connectionPool: ConnectionPool) {
 
     fun send(player: String, topic: Topic, data: Any) {

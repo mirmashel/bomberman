@@ -1,11 +1,13 @@
 package io.objects
 
-import io.game.*
-import io.network.Topic
+import io.game.Cords
+import io.game.Match
+import io.game.Obj
+import io.game.Player
+import io.game.Ticker
 import io.objects.ObjectTypes.Destructable
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
-import io.util.logger
 
 class Bomb(val owner: Player, val game: Match, private val xPos: Int, private val yPos: Int) :
         Tickable, Destructable,

@@ -1,11 +1,13 @@
 package io.objects
 
-import io.game.*
+import io.game.Cords
+import io.game.Match
+import io.game.Obj
+import io.game.Ticker
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
-import io.util.logger
 
-class Fire(val game: Match, val xPos: Int, val yPos: Int): GameObject(TileType.FIRE), Tickable {
+class Fire(val game: Match, val xPos: Int, val yPos: Int) : GameObject(TileType.FIRE), Tickable {
     private var timer = Ticker.FPS / 7
 
     override fun tick(elapsed: Long) {

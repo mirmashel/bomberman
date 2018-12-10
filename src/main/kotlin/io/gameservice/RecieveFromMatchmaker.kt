@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RequestParam
 import java.util.concurrent.atomic.AtomicInteger
 
 @Controller
-@RequestMapping (
+@RequestMapping(
         path = ["/game"]
 )
 class RecieveFromMatchmaker {
 
-    @Volatile var ids = AtomicInteger(0)
+    @Volatile
+    var ids = AtomicInteger(0)
     val log = logger()
-    @RequestMapping (
+    @RequestMapping(
             path = ["/create"],
             method = [RequestMethod.POST]
     )
@@ -29,7 +30,7 @@ class RecieveFromMatchmaker {
         return ResponseEntity.ok(id)
     }
 
-    @RequestMapping (
+    @RequestMapping(
             path = ["/start"],
             method = [RequestMethod.POST]
     )
@@ -39,8 +40,7 @@ class RecieveFromMatchmaker {
         return ResponseEntity.ok(gameId)
     }
 
-
-    @RequestMapping (
+    @RequestMapping(
             path = ["/reload"],
             method = [RequestMethod.POST]
     )

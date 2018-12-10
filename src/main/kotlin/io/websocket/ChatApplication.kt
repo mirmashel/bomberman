@@ -8,11 +8,10 @@ import org.springframework.web.socket.WebSocketSession
 import org.springframework.web.socket.handler.TextWebSocketHandler
 import java.util.concurrent.atomic.AtomicLong
 
-
 data class User(val id: Long, val name: String)
 data class Message(val msgType: String, val data: Any)
 
-class ChatHandler: TextWebSocketHandler() {
+class ChatHandler : TextWebSocketHandler() {
     val connections = HashMap<WebSocketSession, User>()
     var uids = AtomicLong(0)
 

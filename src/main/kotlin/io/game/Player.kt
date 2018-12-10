@@ -1,9 +1,14 @@
 package io.game
 
 import io.network.Actions
-import io.objects.*
+import io.objects.Bomb
+import io.objects.Bonus
+import io.objects.Box
+import io.objects.Fire
+import io.objects.Floor
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
+import io.objects.Wall
 import io.util.logger
 import org.springframework.web.socket.WebSocketSession
 
@@ -40,7 +45,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun kill() {
         isAlive = false
-        //game.removePlayer(name)
+        // game.removePlayer(name)
         log.info("Player $name dead")
         game.addToOutputQueue(playerInfo.json())
         // game.connections.connections.minus(session)
@@ -52,7 +57,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun checkFire(obj: GameObject) =
             obj is Fire
-
 
     override fun tick(elapsed: Long) {
         var nX: Int = xPos
@@ -83,11 +87,11 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val newY2 = rightBorderY(nY)
         idleCounter = 0
 
-        val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)]// левый нижний
-        val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)]// правый нижний
-        val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)]// левый верхний
-        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]//\
-        //log.info("${obj1::class} ${obj2::class} ${obj3::class} ${obj4::class}")
+        val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)] // левый нижний
+        val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)] // правый нижний
+        val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)] // левый верхний
+        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]
+        // log.info("${obj1::class} ${obj2::class} ${obj3::class} ${obj4::class}")
 
         if (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2)) {
             kill()

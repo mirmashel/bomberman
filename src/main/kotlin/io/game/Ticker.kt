@@ -1,10 +1,8 @@
 package io.game
 
-
 import io.objects.ObjectTypes.Tickable
 import io.util.logger
 import java.util.concurrent.ConcurrentLinkedQueue
-import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.LockSupport
 
@@ -19,13 +17,13 @@ class Ticker {
             act(FRAME_TIME)
             val elapsed = System.currentTimeMillis() - started
             if (elapsed < FRAME_TIME) {
-               // log.info("All tick finish at {} ms", elapsed)
+                // log.info("All tick finish at {} ms", elapsed)
 
                 LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(FRAME_TIME - elapsed))
             } else {
-                //log.warn("tick lag {} ms", elapsed - FRAME_TIME)
+                // log.warn("tick lag {} ms", elapsed - FRAME_TIME)
             }
-            //log.info("{}: tick ", tickNumber)
+            // log.info("{}: tick ", tickNumber)
             tickNumber++
         }
     }
@@ -47,5 +45,4 @@ class Ticker {
         const val FPS = 120
         private const val FRAME_TIME = (1000 / FPS).toLong()
     }
-
 }

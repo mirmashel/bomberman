@@ -35,9 +35,7 @@ class ConnectionPool {
         .firstOrNull()
 
     fun add(session: WebSocketSession, player: String) {
-        connections.putIfAbsent(session, player).also {
-         //   if (it == null) log.info("$player joined")
-        }
+        connections.putIfAbsent(session, player)
     }
 
     companion object {

@@ -18,16 +18,16 @@ class ConnectionHandler : TextWebSocketHandler() {
         val players = ConcurrentHashMap<String, Match>()
         val matches = ConcurrentHashMap<String, Match>()
         val threads = ConcurrentHashMap<String, Thread>()
-        fun addMatch(gameId: String, num: Int)
-        {
+        fun addMatch(gameId: String, num: Int) {
             matches[gameId] = Match(gameId, num)
-            //log.info("Matches " + matches.toString())
+            // log.info("Matches " + matches.toString())
         }
 
         fun startMatch(gameId: String) {
             val match = matches[gameId]!!
             threads[gameId] = Thread {
-                while (match.connections.connections.size < match.numberOfPlayers) {}
+                while (match.connections.connections.size < match.numberOfPlayers) {
+                }
                 match.start()
             }
             threads[gameId]!!.start()
@@ -38,30 +38,28 @@ class ConnectionHandler : TextWebSocketHandler() {
     public override fun handleTextMessage(session: WebSocketSession?, message: TextMessage?) {
         val json = ObjectMapper().readTree(message?.payload)
         when (json.get("topic").asText()) {
-            "connect" -> {// name gameId
+            "connect" -> { // name gameId
                 log.info("${json.get("name").asText()} connected to game ${json.get("gameId").asText()}")
                 val match = matches[json.get("gameId").asText()]!!
                 match.addPlayer(json.get("name").asText(), session!!)
-                match.connections.add(session!!, json.get("name").asText())
+                match.connections.add(session, json.get("name").asText())
                 websocks[session] = json.get("name").asText()
                 players[json.get("name").asText()] = match
             }
             "MOVE" -> {
-                val act = json.get("data").asText()
                 val match = players[websocks[session]]!!
                 val player = match.connections.getPlayer(session!!)!!
-                //log.info("player $player moved ${json.get("data").get("direction").asText()} in game ${match.id}")
+                // log.info("player $player moved ${json.get("data").get("direction").asText()} in game ${match.id}")
                 match.inputQueue += RawData(player, json.get("data").get("direction").asText())
             }
             "PLANT_BOMB" -> {
                 val match = players[websocks[session]]!!
                 val player = match.connections.getPlayer(session!!)!!
-                //log.info("player ${player} planted bomb}")
+                // log.info("player ${player} planted bomb}")
                 match.inputQueue += RawData(player, "PLANT_BOMB")
             }
         }
     }
-
 }
 
 @Configuration

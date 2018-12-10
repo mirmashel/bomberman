@@ -22,7 +22,6 @@ class GameField(val game: Match, private val length: Int, private val height: In
         val cornerYIndex = arrayOf(1, 2, height - 2, height - 3)
         field.forEachIndexed { i, row ->
             row.forEachIndexed { j, _ ->
-               // if (i == 0 || j == 0 || i == height - 1 ||)
                 if (i == 0 || i == length - 1 || j == 0 || j == height - 1 || (i % 2 == 0 && j % 2 == 0)) {
                     field[i][j] = Wall()
                 } else if (cornerXIndex.contains(i) && cornerYIndex.contains(j)) {
