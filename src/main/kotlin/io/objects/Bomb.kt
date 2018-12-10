@@ -1,49 +1,19 @@
 package io.objects
 
-import io.game.Match
-import io.game.Player
-import io.game.Ticker
+import io.game.*
 import io.network.Topic
 import io.objects.ObjectTypes.Destructable
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
+import io.util.logger
 
 class Bomb(val owner: Player, val game: Match, private val xPos: Int, private val yPos: Int) :
         Tickable, Destructable,
         GameObject(TileType.BOMB) {
+    val id = Match.ids++
+
     override fun destroy(xPos: Int, yPos: Int) {
-        for (i in 1..owner.explosionSize) {
-            game.findPlayer(xPos + i, yPos)?.kill()
-            if (!explode(xPos + i, yPos)) {
-                break
-            }
-            game.addToOutputQueue(Topic.REPLICA,
-                    "\"type\":\"Fire\",\"position\":{\"y\":$yPos,\"x\":${xPos + i}\")")
-        }
-        for (i in 1..owner.explosionSize) {
-            game.findPlayer(xPos - i, yPos)?.kill()
-            if (!explode(xPos - i, yPos)) {
-                break
-            }
-            game.addToOutputQueue(Topic.REPLICA,
-                    "\"type\":\"Fire\",\"position\":{\"y\":$yPos,\"x\":${xPos - i}\")")
-        }
-        for (i in 1..owner.explosionSize) {
-            game.findPlayer(xPos, yPos + i)?.kill()
-            if (!explode(xPos, yPos + i)) {
-                break
-            }
-            game.addToOutputQueue(Topic.REPLICA,
-                    "\"type\":\"Fire\",\"position\":{\"y\":${yPos + i},\"x\":$xPos\")")
-        }
-        for (i in 1..owner.explosionSize) {
-            game.findPlayer(xPos, yPos - i)?.kill()
-            if (!explode(xPos, yPos - i)) {
-                break
-            }
-            game.addToOutputQueue(Topic.REPLICA,
-                    "\"type\":\"Fire\",\"position\":{\"y\":${yPos - i},\"x\":$xPos\")")
-        }
+
     }
 
     private fun explode(x: Int, y: Int): Boolean {
@@ -57,14 +27,16 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
         return true
     }
 
-    private var timer = Ticker.FPS * 3
+    private var timer = Ticker.FPS * 2
 
     override fun tick(elapsed: Long) {
         timer--
-        if (timer == 0) {
+        if (timer <= 0) {
+            logger().info("Bomb id: ${id} detroyed")
             destroy(xPos, yPos)
             owner.bombsPlanted--
             game.tickables.unregisterTickable(this)
+            game.addToOutputQueue(Topic.PLANT_BOMB, Bmb(id,"Bomb", Cords(xPos * Match.mult, yPos * Match.mult)).json())
         }
     }
 }

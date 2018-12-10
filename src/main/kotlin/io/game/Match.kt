@@ -57,8 +57,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                     //connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
                     addToOutputQueue(Topic.REPLICA, act.toJson())
                     if (type == "Wood") {
-                        addToOutputQueue(Topic.REPLICA, act.toJson())
-                        field[i, j] = Floor()
+                        //addToOutputQueue(Topic.REPLICA, act.toJson())
+                        //field[i, j] = Floor()
                     }
                 }
             }
@@ -75,7 +75,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     override fun tick(elapsed: Long) {
         parseInput()
         parseOutput()
-        sendPlayerStatus()
+        //sendPlayerStatus()
         if (numberOfPlayers != 1 && players.size <= 1) {
             addToOutputQueue(Topic.END_MATCH, "")
             tickables.isEnded = true
@@ -100,6 +100,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 "DOWN" -> pl.move(Actions.MOVE_DOWN)
                 "LEFT" -> pl.move(Actions.MOVE_LEFT)
                 "RIGHT" -> pl.move(Actions.MOVE_RIGHT)
+                "IDLE" -> pl.move(Actions.IDLE)
                 "PLANT_BOMB" -> pl.plantBomb()
                 else -> {
                 }
@@ -111,6 +112,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     fun start() {
         tickables.registerTickable(this)
+        players.values.forEach { tickables.registerTickable(it) }
         sendGameField()
         sendPlayerStatus()
         connections.broadcast(Topic.START.toJson())

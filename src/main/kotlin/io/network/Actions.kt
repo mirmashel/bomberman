@@ -6,5 +6,5 @@ enum class Actions {
     MOVE_LEFT,
     MOVE_RIGHT,
     PLANT_BOMB,
-    NOTHING
+    IDLE
 }
