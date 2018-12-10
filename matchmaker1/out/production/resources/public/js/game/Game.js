@@ -66,42 +66,41 @@ Game.prototype.drawBackground = function () {
 // изменяет (Pawn и  Bomb)
 Game.prototype.gc = function (gameObjects) {
     var survivors = new Set();
-    var i = 0;
     // Стоит отметить что все объекты изначально разделяются по ID
-    //for (var i = 0; i < gameObjects.length; i++) {
+    for (var i = 0; i < gameObjects.length; i++) {
         var wasDeleted = false;
-        var obj = gameObjects;
+        var obj = JSON.parse(gameObjects[i]);
+        if (obj.type === "Bomb")
+            console.log(obj);
 
         // Суть в том, что Пешка и Бомба живут ровно столько, сколько мы отправляем их в реплике (В отличие от других
         // объектов, таких как ящики)
-        console.log(obj.id);
         if (obj.type === 'Pawn' || obj.type === 'Bomb') {
             gMessageBroker.handler[obj.type](obj);
             survivors.add(obj.id);
+            continue;
         }
 
         // Ящики же и бонусы живут между двумя репликами, в которых они присутствуют
         // Если они были присланны в реплике в первый раз, то они появляются
         // Если же второй раз, то удаляются
-        else {
-            [this.tiles, this.bonuses].forEach(function (it) {
-                var i = it.length;
-                while (i--) {
-                    if (obj.id === it[i].id) {
-                        it[i].remove();
-                        it.splice(i, 1);
-                        wasDeleted = true;
-                    }
+        [this.tiles, this.bonuses].forEach(function (it) {
+            var i = it.length;
+            while (i--) {
+                if (obj.id === it[i].id) {
+                    it[i].remove();
+                    it.splice(i, 1);
+                    wasDeleted = true;
                 }
-            });
-        }
+            }
+        });
 
         // здесь мы добавляем обычгые объекты, кстати условие на проверку Pawn вроде лишнее, так как в начале мы
         // проверяем на равенство
         if (!wasDeleted && obj.type !== 'Pawn') {
             gMessageBroker.handler[obj.type](obj);
         }
-   // }
+    }
 
     // Вот как раз мы тут удаляем Pawn и Bomb
     [this.players, this.bombs].forEach(function (it) {
