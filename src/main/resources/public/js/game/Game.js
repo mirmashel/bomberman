@@ -14,10 +14,8 @@ var Game = function (stage) {
 Game.prototype.start = function (numb) {
     gInputEngine.setupBindings();
     var gameId = gMatchMaker.getSessionId(numb);
-    if (gameId == -1) {
-        delete gGameEngine;
-        gGameEngine = new GameEngine();
-        return;
+    if (gameId === -1) {
+        my_reload();
     }
     this.serverProxy.connectToGameServer(gameId);
     this.drawBackground();

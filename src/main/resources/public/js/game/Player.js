@@ -50,7 +50,8 @@ Player.prototype.animate = function (animation) {
 Player.prototype.update = function () {
     if (!this.alive) {
         this.animate('dead');
-        my_reload();
+        this.remove();
+        //my_reload();
     }
 
     if (this.direction === "UP") {
