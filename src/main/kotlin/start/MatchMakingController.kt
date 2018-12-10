@@ -27,7 +27,7 @@ class MatchMakingController {
     val gamesFor4: ConcurrentHashMap<String, Int> = ConcurrentHashMap()
     val log = logger()
     val players = ConcurrentLinkedQueue<String>()
-
+    var userSet: MutableSet<String> = mutableSetOf();
     @PostConstruct
     fun rel() {
         ToServer.reload() // при запуске матчмэйкера удалить все игры
@@ -39,7 +39,11 @@ class MatchMakingController {
     )
     fun join(@RequestParam("name") name: String, @RequestParam("players") players: String): ResponseEntity<String> {
         log.info("$name $players")
-        return when (players) {
+        if (name == "") {
+            log.info("Ya zdes'")
+            return ResponseEntity.badRequest().body("You should login first")
+        }
+        return when(players) {
             "1" -> joinToGame1(name)
             "2" -> joinToGame2(name)
             "4" -> joinToGame4(name)
@@ -116,13 +120,18 @@ class MatchMakingController {
         if (password.isEmpty()) return ResponseEntity.badRequest().body("password is too short")
         if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
         val a = UserDao()
-        if (a.getAllWhere(Op.build { Users.login eq name }).isEmpty()) {
+        if (userSet.contains(name)) {
+            return ResponseEntity.ok(name)
+        }
+
+        if (a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
             return ResponseEntity.badRequest().body("User with this name doesn't exist")
         }
         var curUsr = a.getAllWhere(Op.build { Users.login eq name })
         if (password != curUsr[0].password) {
             return ResponseEntity.badRequest().body("Invalid password")
         }
+        userSet.add(name)
         return ResponseEntity.ok(name)
     }
 
@@ -136,7 +145,6 @@ class MatchMakingController {
         if (name.length > 20) return ResponseEntity.badRequest().body("Name is too long")
         if (password.isEmpty()) return ResponseEntity.badRequest().body("password is too short")
         if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
-
         val usr = User(name, 0, password)
         val a = UserDao()
         if (!a.getAllWhere(Op.build { Users.login eq name }).isEmpty()) {

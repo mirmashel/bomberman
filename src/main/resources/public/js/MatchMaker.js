@@ -13,8 +13,8 @@ MatchMaker.prototype.getSessionId = function (numb) {
     var sessionId = -1;
     $.ajax(this.settings).done(function(id) {
         sessionId = id;
-    }).fail(function() {
-        alert("Matchmaker request failed");
+    }).fail(function(jqXHR) {
+        alert(jqXHR.status + " " + jqXHR.statusText + ". " + jqXHR.responseText);
     });
 
     return sessionId;

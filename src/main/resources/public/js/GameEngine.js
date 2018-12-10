@@ -60,6 +60,13 @@ GameEngine.prototype.finishGame = function (gameOverText) {
     }
     this.menu.showGameOver(gameOverText);
     this.stage.update();
+
+
+};
+
+GameEngine.prototype.reload = function() {
+    delete this;
+    return new GameEngine();
 };
 
 gGameEngine = new GameEngine();
