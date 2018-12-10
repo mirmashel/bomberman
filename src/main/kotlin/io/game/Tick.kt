@@ -20,6 +20,7 @@ class Ticker {
             val elapsed = System.currentTimeMillis() - started
             if (elapsed < FRAME_TIME) {
                // log.info("All tick finish at {} ms", elapsed)
+
                 LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(FRAME_TIME - elapsed))
             } else {
                 log.warn("tick lag {} ms", elapsed - FRAME_TIME)
