@@ -47,7 +47,7 @@ dependencies {
 val fatJar = task("fatJar", type = Jar::class) {
     baseName = "${project.name}-fat"
     manifest {
-        attributes["Main-Class"] = "matchmaking.appKt"
+        attributes["Main-Class"] = "start.appKt"
     }
     from(configurations.runtime.map({ if (it.isDirectory) it else zipTree(it) }))
     with(tasks["jar"] as CopySpec)

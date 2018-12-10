@@ -16,7 +16,7 @@ var Fire = function (id, position) {
             regY: 0
         },
         animations: {
-            idle: [0, 5, null, 0.4]
+            idle: [0, 5, null, 1]
         }
     });
 

@@ -4,8 +4,6 @@ import com.kohttp.dsl.httpPost
 import com.kohttp.ext.EagerResponse
 import com.kohttp.ext.eager
 import okhttp3.RequestBody
-import org.springframework.http.StreamingHttpOutputMessage
-import util.logger
 
 class ToServer {
     companion object {

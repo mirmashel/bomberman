@@ -18,7 +18,7 @@ var Bomb = function (id, position, strength) {
             regY: -1
         },
         animations: {
-            idle: [0, 4, "idle", 0.2]
+            idle: [0, 4, "idle", 0.8]
         }
     });
 
