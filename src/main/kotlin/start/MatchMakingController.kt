@@ -121,7 +121,7 @@ class MatchMakingController {
         if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
         val a = UserDao()
         if (userSet.contains(name)) {
-            return ResponseEntity.ok(name)
+            return ResponseEntity.badRequest().body("User with this name is already logged")
         }
 
         if (a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
@@ -151,6 +151,16 @@ class MatchMakingController {
             return ResponseEntity.badRequest().body("User with this name already exists")
         }
         a.insert(usr)
+        return ResponseEntity.ok(name)
+    }
+
+    @RequestMapping(
+        path = ["/logout"],
+        method = [RequestMethod.POST],
+        consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE]
+    )
+    fun logout(@RequestParam("name") name: String): ResponseEntity<String> {
+        userSet.remove(name)
         return ResponseEntity.ok(name)
     }
 }

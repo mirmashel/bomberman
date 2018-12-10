@@ -50,10 +50,7 @@ Player.prototype.animate = function (animation) {
 Player.prototype.update = function () {
     if (!this.alive) {
         this.animate('dead');
-        delete gGameEngine;
-        gGameEngine = new GameEngine();
-        gGameEngine.load();
-        return;
+        my_reload();
     }
 
     if (this.direction === "UP") {
