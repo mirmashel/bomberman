@@ -92,7 +92,10 @@ Menu.prototype.drawPlayButtonBackground = function (x, y, buttonSize, numb) {
     this.setHandCursor(background);
 
     background.addEventListener('click', function() {
-
+        if (name == '') {
+            alert("You should login first!!!")
+            return false;
+        }
         gGameEngine.startGame(numb)
     });
 };

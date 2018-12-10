@@ -4,10 +4,6 @@
     <title>Bomberman</title>
     <meta name="description" content="Transmission", charset="UTF-8">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-    <style>
-    body {
-        background: url(https://cs.msu.ru/sites/cmc/files/images/technosphera_logo.jpg)
-    }</style>
     <script src="js/external/preloadjs-NEXT.combined.js"></script>
     <script src="js/external/easeljs-NEXT.combined.js"></script>
     <script src="js/external/jquery-3.3.1.min.js"></script>
@@ -32,39 +28,43 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
-<body onload="gGameEngine.load()">
+<body onload="gGameEngine.load();
+        trueload();">
     <div class="container">
         <div class="page-header">
-        </div>
-        <div id="body" class="row" style="position: absolute; left: 70%;">
-            <div id="Table" class="column">
-                <table> <tr></tr> </table>
-                <div class="item">1321</div><div class="item">1321</div><div class="item">1321</div></div>
         </div>
         <div id="game">
             <canvas id="canvas" style="background-color: gray;"></canvas>
         </div>
-        <form method="POST" id="nameform" action="javascript:void(null);" >
-            <input id="name" name = "name">
-            <input id="password" name = "password" type="password">
-            <input id="LoginButton" type="submit" value="Login" name="action" onclick="login(1);">
-            <input id="RegisterButton" type="submit" value="Register" name="action" onclick="login(2)">
 
-        </form>
-        <h3>You have only 10 seconds to transmit the bomb, be fast!</h3>
         <ul>
             <li><strong>arrow keys</strong> - move</li>
-            <li><strong>spacebar</strong> - jump</li>
+            <!--<li><strong>spacebar</strong> - jump</li>-->
             <li><strong>q</strong> - plant bomb</li>
+            <li> <strong> YOUR NAME IS: </strong> <span id="pisanina"></span> </li>
         </ul>
         <hr>
-
+        <input id="reload" type="submit" value="Restart" name="action" onclick="my_reload();">
         <div class="footer">
             <div class="alert alert-success">
                 <img src="img/github.png" width="32">
             </div>
         </div>
     </div>
+    <script> $(".container").css({"display": "none"}); </script>
+    <span id="gagaga">BOMBERMAN GAME</span>
+    <form method="POST" id="nameform" action="javascript:void(null);" >
+        <input id="name" placeholder="Login" name = "name">
+        <br/>
+        <br/>
+        <input id="password" placeholder="Password" name = "password" type="password">
+        <br/>
+        <input id="LoginButton" type="submit" value="Login" name="action" onclick="login(1);">
+        <input id="RegisterButton" align="right" type="submit" value="Register" name="action" onclick="login(2)">
+    </form>
+    <img src="https://cs.msu.ru/sites/cmc/files/images/technosphera_logo.jpg" id="img1">
+
+
 </body>
 </html>
 

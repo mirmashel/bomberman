@@ -18,8 +18,4 @@ interface Dao<T> {
      */
     fun insert(t: T)
 
-    /**
-     * SELECT * from ... WHERE id=
-     * @return Optional.empty() if nothing found
-     */
 }
