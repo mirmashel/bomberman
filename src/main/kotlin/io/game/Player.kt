@@ -2,13 +2,9 @@ package io.game
 
 import io.network.Actions
 import io.network.Topic
-import io.objects.Bomb
-import io.objects.Box
-import io.objects.Floor
-import io.objects.ObjectTypes.Bonus
+import io.objects.*
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
-import io.objects.Wall
 import io.util.logger
 import io.util.toJson
 
@@ -30,8 +26,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     fun check_step(obj: GameObject) =
-        !(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))
-
+            !(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))
 
 
     override fun tick(elapsed: Long) {
@@ -43,7 +38,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
                 Actions.MOVE_UP -> newX1 += speed
                 Actions.MOVE_LEFT -> newY1 -= speed
                 Actions.MOVE_DOWN -> newX1 -= speed
-                Actions.MOVE_RIGHT -> newY1 +=  speed
+                Actions.MOVE_RIGHT -> newY1 += speed
                 else -> {
                     send("IDLE")
                     idleCounter++
@@ -70,7 +65,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             yPos = newY1
         }
         send(direction.name.substringAfter("MOVE_"))
-        if (game.field[xPos / Match.mult, yPos / Match.mult].isBonus()) {
+        if (game.field[xPos / Match.mult, yPos / Match.mult] is Bonus) {
             (game.field[xPos, yPos] as Bonus).pickUp(this)
         }
         direction = Actions.IDLE
@@ -87,20 +82,16 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun plantBomb() {
         if (game.field[xPos / Match.mult, yPos / Match.mult] is Floor &&
-                bombsPlanted < maxNumberOfBombs) {
-            bombsPlanted++
-            val newY = yPos.div(Match.mult)
-            val newX = xPos.div(Match.mult)
-            val b = Bomb(this, game, xPos, yPos)
-            game.field[xPos / Match.mult, yPos / Match.mult] = b
-            game.tickables.registerTickable(b)
-            logger().info("Bomb id: ${b.id} planted")
-            game.addToOutputQueue(Bmb(b.id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
-        }
+                        bombsPlanted < maxNumberOfBombs) {
+                    bombsPlanted++
+                    val b = Bomb(this, game, xPos, yPos)
+                    game.field[xPos / Match.mult, yPos / Match.mult] = b
+                    game.tickables.registerTickable(b)
+                }
     }
 
     companion object {
-        const val maxIdleTick = Ticker.FPS / 60
+        const val maxIdleTick = Ticker.FPS / 30
         val log = logger()
     }
 }

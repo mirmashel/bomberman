@@ -5,8 +5,6 @@ enum class TileType {
     WALL,
     BOX,
     FLOOR,
-    SPEED_BONUS,
-    EXPLOSION_BONUS,
-    BOMB_BONUS,
+    BONUS,
     FIRE
 }

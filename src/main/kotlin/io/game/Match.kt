@@ -43,22 +43,23 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     }
 
     private fun sendGameField() {
-        for (i in 0 until length) { // Раскоментить
+        for (i in 0 until length) {
             for (j in 0 until height) {
+                val id: Int
                 val type = when (field[i, j]) {
                     is Box -> "Wood"
                     is Wall -> "Wall"
                     else -> ""
                 }
                 if (type != "") {
-                    var act = Item(ids++, type, Cords(j * mult, i * mult))
+                    val act = Obj(field[i, j].id, type, Cords(j * mult, i * mult))
                     //log.info(act.toJson())
                     // var alo = "\"type\":\"$type\",position\":{\"y\":${i * 10},\"x\":$j\")"
                     //connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
                     addToOutputQueue(act.toJson())
-                    if (type == "Wood") {
-                        addToOutputQueue(act.toJson())
-                        field[i, j] = Floor()
+                    if (type == "Wood") { //delete
+                        //addToOutputQueue(act.toJson())
+                        //field[i, j] = Floor()
                     }
                 }
             }
