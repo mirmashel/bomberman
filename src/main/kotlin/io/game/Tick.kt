@@ -3,12 +3,13 @@ package io.game
 
 import io.objects.ObjectTypes.Tickable
 import io.util.logger
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.LockSupport
 
 class Ticker {
-    private val tickables = ConcurrentSkipListSet<Tickable>()
+    private val tickables = ConcurrentLinkedQueue<Tickable>()
     var tickNumber: Long = 0
     var isEnded = false
 
