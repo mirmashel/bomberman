@@ -11,22 +11,6 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.handler.TextWebSocketHandler
 import java.util.concurrent.ConcurrentHashMap
 
-
-/*data class RawData(val name: String, val action: String)
-
-class Match(val gameId: String, val numberofPlayers: Int) {
-    val connections = ConnectionPool()
-    val inputQueue = ConcurrentLinkedQueue<RawData>()
-    val outputQueue =  ConcurrentLinkedQueue<String>()
-    val players = listOf<String>().toMutableList()
-    fun start() {
-        return
-    }
-    fun stop() {
-        return
-    }
-}*/
-
 class ConnectionHandler : TextWebSocketHandler() {
     companion object {
         val log = logger()
@@ -47,6 +31,7 @@ class ConnectionHandler : TextWebSocketHandler() {
                 match.start()
             }
             threads[gameId]!!.start()
+            log.info("Game $gameId ended")
         }
     }
 
@@ -56,7 +41,7 @@ class ConnectionHandler : TextWebSocketHandler() {
             "connect" -> {// name gameId
                 log.info("${json.get("name").asText()} connected to game ${json.get("gameId").asText()}")
                 val match = matches[json.get("gameId").asText()]!!
-                match.addPlayer(json.get("name").asText())
+                match.addPlayer(json.get("name").asText(), session!!)
                 match.connections.add(session!!, json.get("name").asText())
                 websocks[session] = json.get("name").asText()
                 players[json.get("name").asText()] = match
@@ -75,8 +60,6 @@ class ConnectionHandler : TextWebSocketHandler() {
                 match.inputQueue += RawData(player, "PLANT_BOMB")
             }
         }
-
-
     }
 
 }

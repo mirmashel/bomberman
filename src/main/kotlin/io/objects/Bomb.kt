@@ -17,16 +17,16 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
         val newY = yPos.div(Match.mult)
         createFire(newX, newY)
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX + i, newY)) break;
+            if (!createFire(newX + i, newY)) break
         }
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX, newY + i)) break;
+            if (!createFire(newX, newY + i)) break
         }
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX - i, newY)) break;
+            if (!createFire(newX - i, newY)) break
         }
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX, newY - i)) break;
+            if (!createFire(newX, newY - i)) break
         }
     }
 

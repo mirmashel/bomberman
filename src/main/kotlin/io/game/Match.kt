@@ -12,6 +12,7 @@ import io.objects.ObjectTypes.Tickable
 import io.objects.Wall
 import io.util.logger
 import io.util.toJson
+import org.springframework.web.socket.WebSocketSession
 import java.lang.Math.abs
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.random.Random
@@ -33,10 +34,11 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         return null
     }
 
-    fun addPlayer(name: String) {
+    fun addPlayer(name: String, session: WebSocketSession) {
         players += Pair(name, Player(ids++, this, name,
                 (startingPositions[rand].first * mult).toInt(),
-                (startingPositions[rand].second * mult).toInt()))
+                (startingPositions[rand].second * mult).toInt(),
+                session))
         rand++
         rand %= 4
         // numberOfPlayers++
@@ -98,6 +100,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     private fun parseInput() {
         while (!inputQueue.isEmpty()) {
             val curEntry = inputQueue.poll()
+            if (players[curEntry.name] == null)
+                continue
             val pl = players[curEntry.name] as Player
             when (curEntry.action) {
                 "UP" -> pl.move(Actions.MOVE_UP)
