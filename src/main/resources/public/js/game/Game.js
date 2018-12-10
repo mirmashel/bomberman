@@ -70,8 +70,6 @@ Game.prototype.gc = function (gameObjects) {
     for (var i = 0; i < gameObjects.length; i++) {
         var wasDeleted = false;
         var obj = JSON.parse(gameObjects[i]);
-        if (obj.type === "Bomb")
-            console.log(obj);
 
         // Суть в том, что Пешка и Бомба живут ровно столько, сколько мы отправляем их в реплике (В отличие от других
         // объектов, таких как ящики)
