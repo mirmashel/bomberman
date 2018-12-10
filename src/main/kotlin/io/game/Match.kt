@@ -129,10 +129,11 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         const val length = 17
         const val height = 27
         const val mult = 32
+        const val step = 64
         var rand = abs(Random.nextInt()) % 4
         val startingPositions = listOf(
-                Pair(1.5, 1.5), Pair(length - 1.5, 1.5),
-                Pair(1.5, height - 1.5), Pair(length - 1.5, height - 1.5)
+                Pair(1, 1), Pair(length - 2, 1),
+                Pair(1, height - 2), Pair(length - 2, height - 2)
         )
     }
 }
