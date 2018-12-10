@@ -6,8 +6,8 @@ import io.objects.ObjectTypes.Destructable
 import io.objects.ObjectTypes.GameObject
 import kotlin.random.Random
 
-class Box(val game: Match) : Destructable, GameObject(TileType.BOX) {
-    override fun destroy(xPos: Int, yPos: Int) {
+class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObject(TileType.BOX) {
+    override fun destroy() {
         val r = Random.nextInt() % 100
         var type = ""
         game.field[xPos, yPos] = when {

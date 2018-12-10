@@ -60,6 +60,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val newX2 = newX1 + Match.mult / 2
         val newY2 = newY1 + Match.mult / 2
         idleCounter = 0
+
         val obj1 = check_step(game.field[newX1.div(Match.mult), newY1.div(Match.mult)])// левый нижний
         val obj2 = check_step(game.field[newX1.div(Match.mult), newY2.div(Match.mult)])// правый нижний
         val obj3 = check_step(game.field[newX2.div(Match.mult), newY1.div(Match.mult)])// левый верхний
@@ -94,7 +95,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             game.field[xPos / Match.mult, yPos / Match.mult] = b
             game.tickables.registerTickable(b)
             logger().info("Bomb id: ${b.id} planted")
-
             game.addToOutputQueue(Bmb(b.id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
         }
     }

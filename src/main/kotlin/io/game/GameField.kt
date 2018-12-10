@@ -28,7 +28,7 @@ class GameField(val game: Match, private val length: Int, private val height: In
                 } else if (cornerXIndex.contains(i) && cornerYIndex.contains(j)) {
                     field[i][j] = Floor()
                 } else {
-                    field[i][j] = Box(game)
+                    field[i][j] = Box(game, i, j)
                 }
             }
         }

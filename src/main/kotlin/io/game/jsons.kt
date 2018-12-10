@@ -9,6 +9,6 @@ data class Item(val id: Int, val type: String, val position: Cords) {
 data class Chel(val id: Int, val type: String, val position: Cords, val alive: Boolean, val direction: String) {
     fun json() = this.toJson()
 }
-data class Bmb(val id: Int, val type: String, val position: Cords) {
+data class Obj(val id: Int, val type: String, val position: Cords) {
     fun json() = this.toJson()
 }
