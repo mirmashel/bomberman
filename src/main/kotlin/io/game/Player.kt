@@ -12,7 +12,7 @@ import io.util.logger
 import io.util.toJson
 
 class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var yPos: Int) : Tickable {
-    var explosionSize = 2
+    var explosionSize = 1
     var speed = 1
     var maxNumberOfBombs = 1
     var bombsPlanted = 0
