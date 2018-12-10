@@ -12,7 +12,7 @@ import io.util.logger
 import io.util.toJson
 
 class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var yPos: Int) : Tickable {
-    var explosionSize = 1
+    var explosionSize = 2
     var speed = 1
     var maxNumberOfBombs = 1
     var bombsPlanted = 0
@@ -51,8 +51,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         if (!(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))) {
             xPos = newX
             yPos = newY
-            send(direction.name.substringAfter("MOVE_"))
         }
+        send(direction.name.substringAfter("MOVE_"))
         if (game.field[xPos / Match.mult, yPos / Match.mult].isBonus()) {
             (game.field[xPos, yPos] as Bonus).pickUp(this)
         }
@@ -79,7 +79,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 // {"id":1,"type":"Bomb","position":{"y":20,"x":10}}
             val newY = yPos.div(Match.mult)
             val newX = xPos.div(Match.mult)
-            game.addToOutputQueue(Bmb(b.id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
+            game.addToOutputQueue(Obj(b.id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
         }
     }
 

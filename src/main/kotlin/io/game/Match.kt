@@ -57,8 +57,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                     //connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
                     addToOutputQueue(act.toJson())
                     if (type == "Wood") {
-                        //addToOutputQueue(Topic.REPLICA, act.toJson())
-                        //field[i, j] = Floor()
+                        addToOutputQueue(act.toJson())
+                        field[i, j] = Floor()
                     }
                 }
             }
