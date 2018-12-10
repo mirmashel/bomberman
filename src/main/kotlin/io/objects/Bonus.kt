@@ -1,17 +1,27 @@
 package io.objects
 
+import io.game.Cords
+import io.game.Match
 import io.game.Player
-import io.objects.ObjectTypes.Bonus
+import io.game.PowerUp
+import io.objects.ObjectTypes.BonusType
 import io.objects.ObjectTypes.GameObject
+import io.util.logger
+import io.util.toJson
 
-class BombBonus : GameObject(TileType.BOMB_BONUS), Bonus {
-    override fun pickUp(p: Player) = p.maxNumberOfBombs++
-}
+class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : GameObject(TileType.BONUS) {
 
-class SpeedBonus : GameObject(TileType.SPEED_BONUS), Bonus {
-    override fun pickUp(p: Player) = p.speed++
-}
-
-class ExplosionBonus : GameObject(TileType.EXPLOSION_BONUS), Bonus {
-    override fun pickUp(p: Player) = p.explosionSize++
+    fun pickUp(p: Player) {
+        when (type.name) {
+            "BOMBS" -> p.maxNumberOfBombs++
+            "SPEED" -> p.speed++
+            "RANGE" -> p.explosionSize++
+            else -> {
+            }
+        }
+        logger().info("bonus id $id picked up")
+        game.addToOutputQueue(PowerUp(id, "Bonus",
+                Cords(y * Match.mult, x * Match.mult),
+                type.name).toJson())
+    }
 }

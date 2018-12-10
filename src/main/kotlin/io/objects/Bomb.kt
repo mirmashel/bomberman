@@ -10,37 +10,40 @@ import io.util.logger
 class Bomb(val owner: Player, val game: Match, private val xPos: Int, private val yPos: Int) :
         Tickable, Destructable,
         GameObject(TileType.BOMB) {
-    val id = Match.ids++
 
     override fun destroy() {
         val newX = xPos.div(Match.mult)
         val newY = yPos.div(Match.mult)
+        game.field[newX, newY] = Floor()
         createFire(newX, newY)
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX + i, newY)) break
+            if (!blowUp(newX + i, newY)) break;
         }
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX, newY + i)) break
+            if (!blowUp(newX, newY + i)) break;
         }
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX - i, newY)) break
+            if (!blowUp(newX - i, newY)) break;
         }
         for (i in 1..owner.explosionSize) {
-            if (!createFire(newX, newY - i)) break
+            if (!blowUp(newX, newY - i)) break;
         }
     }
 
-    private fun createFire(x: Int, y: Int): Boolean {
+    private fun blowUp(x: Int, y: Int): Boolean {
         val tile = game.field[x, y]
         return when (tile) {
-            is Floor, is Bomb -> {
-                val f = Fire(game, x * Match.mult, y * Match.mult)
-                game.field[x, y] = f
-                game.addToOutputQueue(Obj(f.id, "Fire", Cords(y * Match.mult, x * Match.mult)).json())
+            is Floor -> {
+                createFire(x, y)
                 true
             }
             is Box -> {
                 tile.destroy()
+                createFire(x, y)
+                false
+            }
+            is Bomb -> {
+                tile.explode()
                 false
             }
             is Wall -> false
@@ -50,15 +53,17 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
         }
     }
 
-    private fun explode(x: Int, y: Int): Boolean {
-        when (game.field[x, y]) {
-            is Box -> (game.field[x, y] as Box).destroy()
-            is Bomb -> (game.field[x, y] as Bomb).destroy()
-            is Wall -> return false
-            else -> {
-            }
-        }
-        return true
+    fun createFire(x: Int, y: Int) {
+        val f = Fire(game, x * Match.mult, y * Match.mult)
+        game.field[x, y] = f
+        game.addToOutputQueue(Obj(f.id, "Fire", Cords(y * Match.mult, x * Match.mult)).json())
+        game.tickables.registerTickable(f)
+    }
+
+    fun explode() {
+        destroy()
+        owner.bombsPlanted--
+        game.tickables.unregisterTickable(this)
     }
 
     private var timer = Ticker.FPS * 2
@@ -69,10 +74,7 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
         game.addToOutputQueue(Obj(id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
         timer--
         if (timer <= 0) {
-            logger().info("Bomb id: ${id} detroyed")
-            destroy()
-            owner.bombsPlanted--
-            game.tickables.unregisterTickable(this)
+            explode()
         }
     }
 }

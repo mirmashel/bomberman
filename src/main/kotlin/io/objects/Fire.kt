@@ -7,7 +7,6 @@ import io.util.logger
 
 class Fire(val game: Match, val xPos: Int, val yPos: Int): GameObject(TileType.FIRE), Tickable {
     private var timer = Ticker.FPS / 30
-    val id = Match.ids++
 
     override fun tick(elapsed: Long) {
         val newY = yPos.div(Match.mult)

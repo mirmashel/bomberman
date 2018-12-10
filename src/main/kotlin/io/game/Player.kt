@@ -3,13 +3,9 @@ package io.game
 import com.kohttp.util.json
 import io.network.Actions
 import io.network.Topic
-import io.objects.Bomb
-import io.objects.Box
-import io.objects.Floor
-import io.objects.ObjectTypes.Bonus
+import io.objects.*
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
-import io.objects.Wall
 import io.util.logger
 import io.util.toJson
 import org.springframework.web.socket.WebSocketSession
@@ -50,8 +46,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     fun check_step(obj: GameObject) =
-        !(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))
-
+            !(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))
 
 
     override fun tick(elapsed: Long) {
@@ -94,7 +89,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             playerInfo.position.y = nX
         }
         send(direction.name.substringAfter("MOVE_"))
-        if (game.field[xPos / Match.mult, yPos / Match.mult].isBonus()) {
+        if (game.field[xPos / Match.mult, yPos / Match.mult] is Bonus) {
             (game.field[xPos, yPos] as Bonus).pickUp(this)
         }
         direction = Actions.IDLE
@@ -111,6 +106,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun plantBomb() {
         if (game.field[xPos / Match.mult, yPos / Match.mult] is Floor &&
+
                 bombsPlanted < maxNumberOfBombs && isAlive) {
             bombsPlanted++
             val b = Bomb(this, game, xCentrer, yCentrer)
@@ -122,7 +118,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     companion object {
-        const val maxIdleTick = Ticker.FPS / 60
+        const val maxIdleTick = Ticker.FPS / 30
         val log = logger()
     }
 }
