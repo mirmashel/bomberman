@@ -31,6 +31,7 @@ Game.prototype.start = function (numb) {
 Game.prototype.update = function () {
     for (var i = 0; i < this.players.length; i++) {
         this.players[i].update();
+        console.log(this.players.length);
     }
 
     for (i = 0; i < this.bombs.length; i++) {
