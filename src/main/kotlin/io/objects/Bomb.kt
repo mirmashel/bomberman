@@ -30,13 +30,15 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
     private var timer = Ticker.FPS * 2
 
     override fun tick(elapsed: Long) {
+        val newY = yPos.div(Match.mult)
+        val newX = xPos.div(Match.mult)
+        game.addToOutputQueue(Bmb(id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
         timer--
         if (timer <= 0) {
             logger().info("Bomb id: ${id} detroyed")
             destroy(xPos, yPos)
             owner.bombsPlanted--
             game.tickables.unregisterTickable(this)
-            game.addToOutputQueue(Topic.PLANT_BOMB, Bmb(id,"Bomb", Cords(xPos * Match.mult, yPos * Match.mult)).json())
         }
     }
 }

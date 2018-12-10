@@ -1,6 +1,7 @@
 package io.gameservice
 
 import io.game.ConnectionHandler
+import io.game.Match
 import io.util.logger
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -52,5 +53,6 @@ class RecieveFromMatchmaker {
         ConnectionHandler.websocks.clear()
         ConnectionHandler.threads.clear()
         ConnectionHandler.players.clear()
+        Match.ids = 0
     }
 }

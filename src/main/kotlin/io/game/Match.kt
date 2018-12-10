@@ -55,7 +55,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                     //log.info(act.toJson())
                     // var alo = "\"type\":\"$type\",position\":{\"y\":${i * 10},\"x\":$j\")"
                     //connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
-                    addToOutputQueue(Topic.REPLICA, act.toJson())
+                    addToOutputQueue(act.toJson())
                     if (type == "Wood") {
                         //addToOutputQueue(Topic.REPLICA, act.toJson())
                         //field[i, j] = Floor()
@@ -67,7 +67,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     fun sendPlayerStatus() = players.values.forEach {
         val chel = Chel(it.id, "Pawn", Cords(it.yPos, it.xPos), it.isAlive, "IDLE")
-        addToOutputQueue(Topic.REPLICA, chel.toJson())
+        addToOutputQueue(chel.toJson())
     }
 
     fun removePlayer(name: String) = players.remove(name)
@@ -77,18 +77,22 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         parseOutput()
         //sendPlayerStatus()
         if (numberOfPlayers != 1 && players.size <= 1) {
-            addToOutputQueue(Topic.END_MATCH, "")
+            //addToOutputQueue(Topic.END_MATCH, "")
             tickables.isEnded = true
         }
 
     }
 
     private fun parseOutput() {
-        while (!outputQueue.isEmpty()) {
+        /*while (!outputQueue.isEmpty()) {
             var x = outputQueue.poll()
             //log.info(x)
             connections.broadcast(x)
-        }
+        }*/
+        var x= outputQueue.toJson()
+       // log.info(x)
+        connections.broadcast(Message(Topic.REPLICA, outputQueue.toJson()).toJson())
+        outputQueue.clear()
     }
 
     private fun parseInput() {
@@ -108,7 +112,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         }
     }
 
-    fun addToOutputQueue(topic: Topic, data: String) = outputQueue.add(Message(topic, data).toJson())
+    fun addToOutputQueue(data: String) = outputQueue.add(data)
 
     fun start() {
         tickables.registerTickable(this)

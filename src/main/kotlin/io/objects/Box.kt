@@ -24,13 +24,9 @@ class Box(val game: Match) : Destructable, GameObject(TileType.BOX) {
                 SpeedBonus()
             }
             else -> {
-                game.addToOutputQueue(Topic.REPLICA,
-                        "\"type\":\"Floor\",\"position\":{\"y\":$yPos,\"x\":$xPos\")")
                 Floor()
             }
         }
-        game.addToOutputQueue(Topic.REPLICA,
-                "\"type\":\"Bonus\",\"position\":{\"y\":$yPos,\"x\":$xPos},\"bonusType\":\"$type\"")
     }
 
 }

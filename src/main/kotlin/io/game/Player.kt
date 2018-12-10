@@ -36,9 +36,9 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             Actions.MOVE_DOWN -> newX--
             Actions.MOVE_RIGHT -> newY++
             else -> {
+                send("IDLE")
                 idleCounter++
                 if (idleCounter >= maxIdleTick) {
-                    send("IDLE")
                     direction = Actions.IDLE
                 } else {
                     return
@@ -48,7 +48,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         idleCounter = 0
         val obj = game.field[newX / Match.mult, newY / Match.mult]
         //logger().info("x = $newX, y = $newY obj = ${obj.t}")
-        if (!(obj is Wall || obj is Box || obj is Bomb)) {
+        if (!(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))) {
             xPos = newX
             yPos = newY
             send(direction.name.substringAfter("MOVE_"))
@@ -61,7 +61,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     private fun send(act: String) {
         val chel = Chel(id, "Pawn", Cords(yPos, xPos), isAlive, act)
-        game.addToOutputQueue(Topic.REPLICA, chel.toJson())
+        game.addToOutputQueue(chel.toJson())
     }
 
     fun move(a: Actions) {
@@ -77,11 +77,13 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             game.tickables.registerTickable(b)
             logger().info("Bomb id: ${b.id} planted")
 // {"id":1,"type":"Bomb","position":{"y":20,"x":10}}
-            game.addToOutputQueue(Topic.PLANT_BOMB, Bmb(b.id, "Bomb", Cords(xPos, yPos)).json())
+            val newY = yPos.div(Match.mult)
+            val newX = xPos.div(Match.mult)
+            game.addToOutputQueue(Bmb(b.id, "Bomb", Cords(newY * Match.mult, newX * Match.mult)).json())
         }
     }
 
     companion object {
-        const val maxIdleTick = Ticker.FPS / 6
+        const val maxIdleTick = Ticker.FPS / 60
     }
 }
