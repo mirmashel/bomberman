@@ -19,12 +19,17 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         }
     private var idleCounter = 0
     var direction = Actions.IDLE
-    var prib = true
+    var prib = 0
 
-    val xCentrer: Int
+    val xCenter: Int
         get() = xPos + 2 * Match.mult / 5
-    val yCentrer: Int
+    val yCenter: Int
         get() = yPos + Match.mult / 3
+
+    val cordsOnFieldX: Int
+        get() = xCenter.div(Match.mult)
+    val cordsOnFieldY: Int
+        get() = yCenter.div(Match.mult)
 
     fun downBorderX(x: Int): Int = x
     fun leftBorderY(y: Int): Int = y + Match.mult / 8
@@ -38,8 +43,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         //game.removePlayer(name)
         log.info("Player $name dead")
         game.addToOutputQueue(playerInfo.json())
-       // game.connections.connections.minus(session)
-       // session.close()
+        // game.connections.connections.minus(session)
+        // session.close()
     }
 
     fun checkStep(obj: GameObject) =
@@ -53,12 +58,12 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         var nX: Int = xPos
         var nY: Int = yPos
 
-        if (prib) {
+        if (prib == 0) {
             when (direction) {
                 Actions.MOVE_UP -> nX += speed
                 Actions.MOVE_LEFT -> nY -= speed
                 Actions.MOVE_DOWN -> nX -= speed
-                Actions.MOVE_RIGHT -> nY +=  speed
+                Actions.MOVE_RIGHT -> nY += speed
                 else -> {
                     send("IDLE")
                     idleCounter++
@@ -69,19 +74,20 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
                     }
                 }
             }
-            prib = false
+            prib++
         } else
-            prib = true
+            prib = (prib + 1) % 3
         val newX1 = downBorderX(nX)
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)
         val newY2 = rightBorderY(nY)
         idleCounter = 0
 
-        var obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)]// левый нижний
-        var obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)]// правый нижний
-        var obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)]// левый верхний
-        var obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]//\
+        val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)]// левый нижний
+        val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)]// правый нижний
+        val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)]// левый верхний
+        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]//\
+        //log.info("${obj1::class} ${obj2::class} ${obj3::class} ${obj4::class}")
 
         if (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2)) {
             kill()
@@ -93,12 +99,13 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             playerInfo.position.y = nX
         }
         send(direction.name.substringAfter("MOVE_"))
-        when {
-            obj1 is Bonus -> obj1.pickUp(this)
-            obj2 is Bonus -> obj2.pickUp(this)
-            obj3 is Bonus -> obj3.pickUp(this)
-            obj4 is Bonus -> obj4.pickUp(this)
-        }
+        if (isAlive)
+            when {
+                obj1 is Bonus -> obj1.pickUp(this)
+                obj2 is Bonus -> obj2.pickUp(this)
+                obj3 is Bonus -> obj3.pickUp(this)
+                obj4 is Bonus -> obj4.pickUp(this)
+            }
         direction = Actions.IDLE
     }
 
@@ -112,11 +119,11 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     fun plantBomb() {
-        if (game.field[xPos / Match.mult, yPos / Match.mult] is Floor &&
+        if (game.field[cordsOnFieldX, cordsOnFieldY] is Floor &&
                 bombsPlanted < maxNumberOfBombs && isAlive) {
             bombsPlanted++
-            val b = Bomb(this, game, xCentrer, yCentrer)
-            game.field[xCentrer / Match.mult, yCentrer / Match.mult] = b
+            val b = Bomb(this, game, xCenter, yCenter)
+            game.field[cordsOnFieldX, cordsOnFieldY] = b
             game.tickables.registerTickable(b)
             logger().info("Bomb id: ${b.id} planted")
         }

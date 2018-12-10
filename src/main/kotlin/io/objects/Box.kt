@@ -22,17 +22,18 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
             rnd <= dropChance * 3 -> Bonus(game, xPos, yPos, BonusType.SPEED)
             else -> Floor()
         }
+        logger().info(game.field[xPos, yPos].t.toString())
+        game.addToOutputQueue(Obj(id, "Wood", Cords(yPos * Match.mult, xPos * Match.mult)).json())
         val b = game.field[xPos, yPos]
         if (b is Bonus) {
-            logger().info("bonus id ${b.id} created at $xPos $yPos")
+          //  logger().info("bonus id ${b.id} created at $xPos $yPos")
             game.addToOutputQueue(PowerUp(b.id, "Bonus",
                     Cords(yPos * Match.mult, xPos * Match.mult),
                     b.type.name).toJson())
         }
-        game.addToOutputQueue(Obj(id, "Wood", Cords(yPos * Match.mult, xPos * Match.mult)).json())
     }
 
     companion object {
-        const val dropChance = 3
+        const val dropChance = 20
     }
 }

@@ -39,7 +39,8 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
             }
             is Box -> {
                 tile.destroy()
-                createFire(x, y)
+                if (!(game.field[x, y] is Bonus))
+                    createFire(x, y)
                 false
             }
             is Bomb -> {

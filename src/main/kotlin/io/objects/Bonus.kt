@@ -19,7 +19,7 @@ class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : Game
             else -> {
             }
         }
-        logger().info("bonus id $id picked up")
+        //logger().info("bonus id $id picked up")
         game.addToOutputQueue(PowerUp(id, "Bonus",
                 Cords(y * Match.mult, x * Match.mult),
                 type.name).toJson())

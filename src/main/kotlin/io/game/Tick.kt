@@ -23,7 +23,7 @@ class Ticker {
 
                 LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(FRAME_TIME - elapsed))
             } else {
-                log.warn("tick lag {} ms", elapsed - FRAME_TIME)
+                //log.warn("tick lag {} ms", elapsed - FRAME_TIME)
             }
             //log.info("{}: tick ", tickNumber)
             tickNumber++
