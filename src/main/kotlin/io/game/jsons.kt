@@ -1,7 +1,7 @@
 package io.game
 
 import io.util.toJson
-data class Cords(val x: Int, val y: Int)
+data class Cords(var x: Int, var y: Int)
 
 data class Chel(val id: Int, val type: String, val position: Cords, var alive: Boolean, var direction: String) {
 

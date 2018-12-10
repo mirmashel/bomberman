@@ -17,16 +17,16 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
         game.field[newX, newY] = Floor()
         createFire(newX, newY)
         for (i in 1..owner.explosionSize) {
-            if (!blowUp(newX + i, newY)) break;
+            if (!blowUp(newX + i, newY)) break
         }
         for (i in 1..owner.explosionSize) {
-            if (!blowUp(newX, newY + i)) break;
+            if (!blowUp(newX, newY + i)) break
         }
         for (i in 1..owner.explosionSize) {
-            if (!blowUp(newX - i, newY)) break;
+            if (!blowUp(newX - i, newY)) break
         }
         for (i in 1..owner.explosionSize) {
-            if (!blowUp(newX, newY - i)) break;
+            if (!blowUp(newX, newY - i)) break
         }
     }
 

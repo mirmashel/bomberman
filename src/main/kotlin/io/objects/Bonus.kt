@@ -23,5 +23,6 @@ class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : Game
         game.addToOutputQueue(PowerUp(id, "Bonus",
                 Cords(y * Match.mult, x * Match.mult),
                 type.name).toJson())
+        game.field[x, y] = Floor()
     }
 }

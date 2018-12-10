@@ -1,13 +1,10 @@
 package io.game
 
-import com.kohttp.util.json
 import io.network.Actions
-import io.network.Topic
 import io.objects.*
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
 import io.util.logger
-import io.util.toJson
 import org.springframework.web.socket.WebSocketSession
 
 class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var yPos: Int, val session: WebSocketSession) : Tickable {
@@ -45,8 +42,11 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
        // session.close()
     }
 
-    fun check_step(obj: GameObject) =
+    fun checkStep(obj: GameObject) =
             !(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))
+
+    fun checkFire(obj: GameObject) =
+            obj is Fire
 
 
     override fun tick(elapsed: Long) {
@@ -78,19 +78,26 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val newY2 = rightBorderY(nY)
         idleCounter = 0
 
-        val obj1 = check_step(game.field[newX1.div(Match.mult), newY1.div(Match.mult)])// левый нижний
-        val obj2 = check_step(game.field[newX1.div(Match.mult), newY2.div(Match.mult)])// правый нижний
-        val obj3 = check_step(game.field[newX2.div(Match.mult), newY1.div(Match.mult)])// левый верхний
-        val obj4 = check_step(game.field[newX2.div(Match.mult), newY2.div(Match.mult)])// правый верхний
-        if (direction.name != "IDLE" && obj1 && obj2 && obj3 && obj4) {
+        var obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)]// левый нижний
+        var obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)]// правый нижний
+        var obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)]// левый верхний
+        var obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]//\
+
+        if (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2)) {
+            kill()
+        }
+        if (direction.name != "IDLE" && checkStep(obj1) && checkStep(obj2) && checkStep(obj3) && checkStep(obj4)) {
             xPos = nX
             yPos = nY
             playerInfo.position.x = nY
             playerInfo.position.y = nX
         }
         send(direction.name.substringAfter("MOVE_"))
-        if (game.field[xPos / Match.mult, yPos / Match.mult] is Bonus) {
-            (game.field[xPos, yPos] as Bonus).pickUp(this)
+        when {
+            obj1 is Bonus -> obj1.pickUp(this)
+            obj2 is Bonus -> obj2.pickUp(this)
+            obj3 is Bonus -> obj3.pickUp(this)
+            obj4 is Bonus -> obj4.pickUp(this)
         }
         direction = Actions.IDLE
     }
@@ -106,14 +113,12 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun plantBomb() {
         if (game.field[xPos / Match.mult, yPos / Match.mult] is Floor &&
-
                 bombsPlanted < maxNumberOfBombs && isAlive) {
             bombsPlanted++
             val b = Bomb(this, game, xCentrer, yCentrer)
-            game.field[xPos / Match.mult, yPos / Match.mult]= b
+            game.field[xCentrer / Match.mult, yCentrer / Match.mult] = b
             game.tickables.registerTickable(b)
             logger().info("Bomb id: ${b.id} planted")
-            kill()
         }
     }
 

@@ -24,7 +24,7 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
         }
         val b = game.field[xPos, yPos]
         if (b is Bonus) {
-            logger().info("bonus id ${b.id} created")
+            logger().info("bonus id ${b.id} created at $xPos $yPos")
             game.addToOutputQueue(PowerUp(b.id, "Bonus",
                     Cords(yPos * Match.mult, xPos * Match.mult),
                     b.type.name).toJson())
