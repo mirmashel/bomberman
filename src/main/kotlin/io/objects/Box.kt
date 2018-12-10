@@ -21,7 +21,7 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
             rnd <= dropChance * 3 -> Bonus(game, xPos, yPos, BonusType.SPEED)
             else -> Floor()
         }
-        logger().info(game.field[xPos, yPos].t.toString())
+        // logger().info(game.field[xPos, yPos].t.toString())
         game.addToOutputQueue(Obj(id, "Wood", Cords(yPos * Match.mult, xPos * Match.mult)).json())
         val b = game.field[xPos, yPos]
         if (b is Bonus) {

@@ -1,6 +1,8 @@
 package io.game
 
 import io.network.Actions
+import io.network.Message
+import io.network.Topic
 import io.objects.Bomb
 import io.objects.Bonus
 import io.objects.Box
@@ -10,6 +12,7 @@ import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
 import io.objects.Wall
 import io.util.logger
+import io.util.toJson
 import org.springframework.web.socket.WebSocketSession
 
 class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var yPos: Int, val session: WebSocketSession) : Tickable {
@@ -48,6 +51,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         // game.removePlayer(name)
         log.info("Player $name dead")
         game.addToOutputQueue(playerInfo.json())
+        game.connections.send(session, Message(Topic.DEAD, "").toJson())
         // game.connections.connections.minus(session)
         // session.close()
     }
@@ -80,7 +84,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             }
             prib++
         } else
-            prib = (prib + 1) % 3
+            prib = (prib + 1) % 2
         val newX1 = downBorderX(nX)
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)
@@ -129,7 +133,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             val b = Bomb(this, game, xCenter, yCenter)
             game.field[cordsOnFieldX, cordsOnFieldY] = b
             game.tickables.registerTickable(b)
-            logger().info("Bomb id: ${b.id} planted")
+            //logger().info("Bomb id: ${b.id} planted")
         }
     }
 
