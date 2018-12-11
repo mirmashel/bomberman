@@ -22,10 +22,10 @@ var Player = function (id, position) {
         },
         animations: {
             idle: [0, 0, 'idle'],
-            down: [0, 3, 'down', 0.4],
-            left: [4, 7, 'left', 0.4],
-            up: [8, 11, 'up', 0.4],
-            right: [12, 15, 'right', 0.4],
+            down: [0, 3, 'down', 0.2],
+            left: [4, 7, 'left', 0.2],
+            up: [8, 11, 'up', 0.2],
+            right: [12, 15, 'right', 0.2],
             dead: [16, 16, 'dead']
         }
     });
@@ -38,6 +38,10 @@ var Player = function (id, position) {
 };
 
 Player.prototype.remove = function () {
+    bgAudio= document.getElementById('background');
+    bgAudio.pause();
+    bgAudio= document.getElementById('sad');
+    bgAudio.play();
     gGameEngine.stage.removeChild(this.bmp);
 };
 
