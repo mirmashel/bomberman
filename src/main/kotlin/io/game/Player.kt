@@ -133,7 +133,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             val b = Bomb(this, game, xCenter, yCenter)
             game.field[cordsOnFieldX, cordsOnFieldY] = b
             game.tickables.registerTickable(b)
-            //logger().info("Bomb id: ${b.id} planted")
         }
     }
 

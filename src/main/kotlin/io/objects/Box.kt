@@ -7,7 +7,6 @@ import io.game.PowerUp
 import io.objects.ObjectTypes.BonusType
 import io.objects.ObjectTypes.Destructable
 import io.objects.ObjectTypes.GameObject
-import io.util.logger
 import io.util.toJson
 import kotlin.math.abs
 import kotlin.random.Random
