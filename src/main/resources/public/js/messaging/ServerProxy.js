@@ -25,9 +25,6 @@ ServerProxy.prototype.setupMessaging = function() {
     gInputEngine.subscribe('bomb', function () {
         self.socket.send(gMessageBroker.plantBomb());
     });
-    gInputEngine.subscribe('jump', function () {
-        self.socket.send(gMessageBroker.jump());
-    });
 };
 
 // Присоединяемся к серверу по сокету
@@ -40,10 +37,9 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
     var isStarted = false;
     this.socket.onmessage = function (event) {
         if (!isStarted) {
-            console.log("ffff");
             isStarted = true;
             var bgAudio= document.getElementById('background');
-            bgAudio.loop = false;
+            bgAudio.loop = true;
             bgAudio.play();
             console.log(bgAudio.canPlayType('audio/mp3'));
         }
@@ -84,6 +80,7 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
         if (nmb == 4) {
             $("#numbers").css({"top": "-200px"});
             $("#curPlayers").css({"top": "-200px"});
+
         }
         if (self.handler[msg.topic] === undefined) {
             return;
