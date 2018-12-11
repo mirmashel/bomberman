@@ -9,6 +9,8 @@ var Menu = function (stage) {
     this.elements = [];
 };
 
+var nmb;
+
 Menu.prototype.show = function () {
     this.drawBackground();
     this.drawPlayButton1();
@@ -96,6 +98,7 @@ Menu.prototype.drawPlayButtonBackground = function (x, y, buttonSize, numb) {
             alert("You should login first!!!")
             return false;
         }
+        nmb = numb;
         gGameEngine.startGame(numb)
     });
 };

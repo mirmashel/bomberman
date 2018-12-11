@@ -121,7 +121,7 @@ class MatchMakingController {
         if (password.length > 20) return ResponseEntity.badRequest().body("password is too long")
         val a = UserDao()
         if (userSet.contains(name)) {
-            return ResponseEntity.badRequest().body("User with this name is already logged")
+            return ResponseEntity.badRequest().body("User with this name has already logged in")
         }
 
         if (a.getAllWhere(Op.build { Users.login eq name }).isEmpty()) {
