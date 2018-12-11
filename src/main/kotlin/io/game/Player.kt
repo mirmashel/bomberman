@@ -48,7 +48,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     fun kill() {
         isAlive = false
         log.info("Player $name dead")
-        game.currentPlayers--
+        //game.currentPlayers--
         game.connections.connections.remove(session)
         game.sendPlayers()
         game.addToOutputQueue(playerInfo.json())
@@ -71,6 +71,9 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     var curIdle = 0
 
     override fun tick(elapsed: Long) {
+        if (!session.isOpen) {
+            kill()
+        }
         var nX: Int = xPos
         var nY: Int = yPos
 
