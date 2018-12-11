@@ -17,7 +17,7 @@ import org.springframework.web.socket.WebSocketSession
 
 class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var yPos: Int, val session: WebSocketSession) : Tickable {
     var explosionSize = 1
-    var speed = 2
+    var speed = 3
     var maxNumberOfBombs = 1
     var bombsPlanted = 0
     var isAlive = true
@@ -58,10 +58,16 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     fun checkStep(obj: GameObject) =
-            !(obj is Wall || obj is Box || (obj is Bomb && obj.owner != this))
+            obj is Wall || obj is Box || (obj is Bomb && obj.owner != this)
 
     fun checkFire(obj: GameObject) =
             obj is Fire
+    fun updatePos(x: Int, y: Int) {
+        xPos = x
+        yPos = y
+        playerInfo.position.x = y
+        playerInfo.position.y = x
+    }
 
     override fun tick(elapsed: Long) {
         var nX: Int = xPos
@@ -73,19 +79,11 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
                 Actions.MOVE_LEFT -> nY -= speed
                 Actions.MOVE_DOWN -> nX -= speed
                 Actions.MOVE_RIGHT -> nY += speed
-                else -> {
-                    send("IDLE")
-                    idleCounter++
-                    if (idleCounter >= maxIdleTick) {
-                        direction = Actions.IDLE
-                    } else {
-                        return
-                    }
-                }
+                else -> {}
             }
             prib++
         } else
-            prib = (prib + 1) % 2
+            prib = (prib + 1) % 3
         val newX1 = downBorderX(nX)
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)
@@ -95,17 +93,61 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)] // левый нижний
         val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)] // правый нижний
         val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)] // левый верхний
-        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]
+        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)] // правый верхний
 
         if (isAlive && (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2))) {
             kill()
         }
-        if (direction.name != "IDLE" && checkStep(obj1) && checkStep(obj2) && checkStep(obj3) && checkStep(obj4)) {
-            xPos = nX
-            yPos = nY
-            playerInfo.position.x = nY
-            playerInfo.position.y = nX
+
+        when {
+            obj1 is Wall -> {
+                when {
+                    direction == Actions.MOVE_LEFT && !checkStep(obj3) -> nX++
+                    direction == Actions.MOVE_DOWN && !checkStep(obj2) -> nY++
+                    else -> {
+                        nY = yPos
+                        nX = xPos
+                    }
+                }
+                updatePos(nX, nY)
+            }
+            obj2 is Wall -> {
+                when {
+                    direction == Actions.MOVE_RIGHT && !checkStep(obj4) -> nX++
+                    direction == Actions.MOVE_DOWN && !checkStep(obj1) -> nY--
+                    else -> {
+                        nY = yPos
+                        nX = xPos
+                    }
+                }
+                updatePos(nX, nY)
+            }
+            obj3 is Wall -> {
+                when {
+                    direction == Actions.MOVE_LEFT && !checkStep(obj1) -> nX--
+                    direction == Actions.MOVE_UP && !checkStep(obj4) -> nY++
+                    else -> {
+                        nY = yPos
+                        nX = xPos
+                    }
+                }
+                updatePos(nX, nY)
+            }
+            obj4 is Wall -> {
+                when {
+                    direction == Actions.MOVE_RIGHT && !checkStep(obj2) -> nX--
+                    direction == Actions.MOVE_UP && !checkStep(obj3) -> nY--
+                    else -> {
+                        nY = yPos
+                        nX = xPos
+                    }
+                }
+                updatePos(nX, nY)
+            }
         }
+
+        if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4))
+            updatePos(nX, nY)
         send(direction.name.substringAfter("MOVE_"))
         if (isAlive)
             when {
