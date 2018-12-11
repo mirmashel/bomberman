@@ -49,6 +49,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         isAlive = false
         log.info("Player $name dead")
         game.currentPlayers--
+        game.connections.connections.remove(session)
+        game.sendPlayers()
         game.addToOutputQueue(playerInfo.json())
         game.connections.send(session, Message(Topic.DEAD, "").toJson())
     }
