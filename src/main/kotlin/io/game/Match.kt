@@ -22,6 +22,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     val tickables = Ticker()
     val connections = ConnectionPool()
     var currentPlayers = numberOfPlayers
+    var started = false
 
     fun findPlayer(x: Int, y: Int): Player? {
         players.values.forEach {
@@ -75,7 +76,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         parseInput()
         parseOutput()
         // sendPlayerStatus()
-        if (numberOfPlayers != 1 && currentPlayers <= 1 || currentPlayers <= 0) {
+        if (connections.countOpenWebsocks() == 0 || numberOfPlayers != 1 && currentPlayers <= 1 || currentPlayers <= 0) {
             // addToOutputQueue(Topic.END_MATCH, "")
             var alive = players.values.find {
                 it.isAlive
@@ -125,7 +126,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         players.values.forEach { tickables.registerTickable(it) }
         sendGameField()
         sendPlayerStatus()
-        sendNames()
+        started = true
         tickables.gameLoop()
     }
 

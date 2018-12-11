@@ -26,7 +26,8 @@ class ConnectionHandler : TextWebSocketHandler() {
         fun startMatch(gameId: String) {
             val match = matches[gameId]!!
             threads[gameId] = Thread {
-                while (match.connections.connections.size < match.numberOfPlayers) {}
+                while (match.connections.connections.size < match.numberOfPlayers) {
+                }
                 match.start()
             }
             threads[gameId]!!.start()
@@ -50,13 +51,15 @@ class ConnectionHandler : TextWebSocketHandler() {
                 val match = players[websocks[session]]!!
                 val player = match.connections.getPlayer(session!!)!!
                 // log.info("player $player moved ${json.get("data").get("direction").asText()} in game ${match.id}")
-                match.inputQueue += RawData(player, json.get("data").get("direction").asText())
+                if (match.started)
+                    match.inputQueue += RawData(player, json.get("data").get("direction").asText())
             }
             "PLANT_BOMB" -> {
                 val match = players[websocks[session]]!!
                 val player = match.connections.getPlayer(session!!)!!
                 // log.info("player ${player} planted bomb}")
-                match.inputQueue += RawData(player, "PLANT_BOMB")
+                if (match.started)
+                    match.inputQueue += RawData(player, "PLANT_BOMB")
             }
         }
     }

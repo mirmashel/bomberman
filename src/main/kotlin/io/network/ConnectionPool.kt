@@ -10,9 +10,20 @@ class ConnectionPool {
 
     fun send(session: WebSocketSession, msg: String) {
         if (session.isOpen) {
-            session.sendMessage(TextMessage(msg))
+            try {
+                session.sendMessage(TextMessage(msg))
+            } catch (e: Exception) {
+                log.warn("Websock dropt")
+            }
+
         }
     }
+
+    fun countOpenWebsocks(): Int = connections
+            .count {
+                it.key.isOpen
+            }
+
 
     fun broadcast(msg: String) {
         connections.forEach { session, _ ->
@@ -31,9 +42,9 @@ class ConnectionPool {
     fun getPlayer(session: WebSocketSession): String? = connections[session]
 
     fun getSession(player: String): WebSocketSession? = connections.entries.asSequence()
-        .filter { it.value == player }
-        .map { it.key }
-        .firstOrNull()
+            .filter { it.value == player }
+            .map { it.key }
+            .firstOrNull()
 
     fun add(session: WebSocketSession, player: String) {
         connections.putIfAbsent(session, player)
