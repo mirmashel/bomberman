@@ -12,6 +12,8 @@ var Bonus = function (id, position, type) {
         img = gGameEngine.asset.bonus.bombs;
     } else if (type === 'RANGE') {
         img = gGameEngine.asset.bonus.explosion;
+    } else if (type === 'PORTAL') {
+        img = gGameEngine.asset.bonus.portal
     }
 
     this.bmp = new createjs.Bitmap(img);
