@@ -5,14 +5,16 @@ import io.game.Match
 import io.game.Obj
 import io.game.PowerUp
 import io.objects.ObjectTypes.BonusType
-import io.objects.ObjectTypes.Destructable
+import io.objects.ObjectTypes.Destructible
 import io.objects.ObjectTypes.GameObject
 import io.util.toJson
 import kotlin.math.abs
 import kotlin.random.Random
 
-class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObject(game.ids++) {
+class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructible, GameObject(game.ids++) {
     override fun destroy() {
+        game.addToOutputQueue(Obj(id, "Wood",
+                Cords(yPos * Match.mult, xPos * Match.mult)).json())
         val rnd = abs(Random.nextInt() % 100)
         game.field[xPos, yPos] = when {
             rnd < dropChance -> Bonus(game, xPos, yPos, BonusType.BOMBS)
@@ -21,11 +23,8 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
             rnd < dropChance * 4 -> Bonus(game, xPos, yPos, BonusType.PORTAL)
             else -> Floor()
         }
-        // logger().info(game.field[xPos, yPos].t.toString())
-        game.addToOutputQueue(Obj(id, "Wood", Cords(yPos * Match.mult, xPos * Match.mult)).json())
         val b = game.field[xPos, yPos]
         if (b is Bonus) {
-            // logger().info("bonus id ${b.id} created at $xPos $yPos")
             game.addToOutputQueue(PowerUp(b.id, "Bonus",
                     Cords(yPos * Match.mult, xPos * Match.mult),
                     b.type.name).toJson())
