@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Bomberman</title>
-    <meta name="description" content="Transmission", charset="UTF-8">
+    <meta name="description" content="Transmission" , charset="UTF-8">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
     <script src="js/external/preloadjs-NEXT.combined.js"></script>
     <script src="js/external/easeljs-NEXT.combined.js"></script>
@@ -25,50 +25,47 @@
     <script src="js/MatchMaker.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
 </head>
 <body onload="gGameEngine.load();
         trueload();">
-    <div class="container">
-        <div class="page-header">
-        </div>
-        <div id="game">
-            <canvas id="canvas" style="background-color: gray;"></canvas>
-        </div>
-
-        <ul>
-            <li><strong>arrow keys</strong> - move</li>
-            <!--<li><strong>spacebar</strong> - jump</li>-->
-            <li><strong>q</strong> - plant bomb</li>
-            <li> <strong> YOUR NAME IS: </strong> <span id="pisanina"></span> </li>
-        </ul>
-        <hr>
-        <input id="reload" type="submit" value="Restart" name="action" onclick="my_reload();">
-        <input id="logout" type="submit" value="Logout" name="action" onclick="logout();">
-        <div class="footer">
-            <div class="alert alert-success">
-                <img src="img/github.png" width="32">
-            </div>
-        </div>
+<div class="container">
+    <div class="page-header">
     </div>
-    <audio id = "background" src="js/sound/game.mp3" loop="loop"></audio>
-    <audio id = "bomb" src = "js/sound/bomb.mp3"></audio>
-    <audio id = "sad" src = "js/sound/sad.mp3"></audio>
-    <script> $(".container").css({"display": "none"}); </script>
-    <span id="gagaga">BOMBERMAN GAME</span>
-    <form method="POST" id="nameform" action="javascript:void(null);" >
-        <input id="name" placeholder="Login" name = "name">
-        <br/>
-        <br/>
-        <input id="password" placeholder="Password" name = "password" type="password">
-        <br/>
-        <input id="LoginButton" type="submit" value="Login" name="action" onclick="login(1);">
-        <input id="RegisterButton" align="right" type="submit" value="Register" name="action" onclick="login(2)">
-    </form>
-    <img src="https://cs.msu.ru/sites/cmc/files/images/technosphera_logo.jpg" id="img1">
-    <img src="https://ak8.picdn.net/shutterstock/videos/26123588/thumb/9.jpg" id="img2">
-    <img src="http://pixelartmaker.com/art/681e156ae971bd4.png" id="img3">
+    <div id="game">
+        <canvas id="canvas" style="background-color: gray;"></canvas>
+    </div>
+
+    <ul>
+        <li><strong>arrow keys</strong> - move</li>
+        <!--<li><strong>spacebar</strong> - jump</li>-->
+        <li><strong>q</strong> - plant bomb</li>
+        <li><strong> YOUR NAME IS: </strong> <span id="pisanina"></span></li>
+    </ul>
+    <hr>
+    <input id="reload" type="submit" value="Restart" name="action" onclick="my_reload();">
+    <input id="logout" type="submit" value="Logout" name="action" onclick="logout();">
+
+</div>
+<audio id="background" src="https://raw.githubusercontent.com/MattSkala/html5-bombergirl/master/sound/game.mp3"
+       loop="loop"></audio>
+<audio id="bomb" src="js/sound/bomb.mp3" loop="0"></audio>
+<audio id="sad" src="js/sound/sad.mp3" loop="0"></audio>
+<script> $(".container").css({"display": "none"}); </script>
+<span id="gagaga">BOMBERMAN GAME</span>
+<form method="POST" id="nameform" action="javascript:void(null);">
+    <input id="name" placeholder="Login" name="name">
+    <br/>
+    <br/>
+    <input id="password" placeholder="Password" name="password" type="password">
+    <br/>
+    <input id="LoginButton" type="submit" value="Login" name="action" onclick="login(1);">
+    <input id="RegisterButton" align="right" type="submit" value="Register" name="action" onclick="login(2)">
+</form>
+<img src="https://cs.msu.ru/sites/cmc/files/images/technosphera_logo.jpg" id="img1">
+<img src="https://ak8.picdn.net/shutterstock/videos/26123588/thumb/9.jpg" id="img2">
+<img src="img/win.png" id="img3">
 
 </body>
 </html>

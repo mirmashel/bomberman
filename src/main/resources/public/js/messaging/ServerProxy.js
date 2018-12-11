@@ -40,21 +40,28 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
     var isStarted = false;
     this.socket.onmessage = function (event) {
         if (!isStarted) {
+            console.log("ffff");
             isStarted = true;
             var bgAudio= document.getElementById('background');
+            bgAudio.loop = false;
             bgAudio.play();
+            console.log(bgAudio.canPlayType('audio/mp3'));
         }
         var msg = JSON.parse(event.data);
         if (msg.topic === 'DEAD') {
             $("#img2").css({"display": "block"});
             $("#img2").css({"opacity": "0"});
-            setInterval(function(){chg_opc()}, 150);
+            bgAudio= document.getElementById('background');
+            bgAudio.pause();
+            bgAudio= document.getElementById('sad');
+            bgAudio.play();
+            setInterval(function(){chg_opc()}, 15);
             setTimeout(function(){my_reload();}, 3000);
         }
         if (msg.topic === 'WIN') {
             $("#img3").css({"display": "block"});
             $("#img3").css({"opacity": "0"});
-            setInterval(function(){chg_opc2()}, 150);
+            setInterval(function(){chg_opc2()}, 15);
             setTimeout(function(){my_reload();}, 3000);
         }
         if (msg.topic === 'NAMES') {
@@ -84,7 +91,7 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
 };
 
 function chg_opc() {
-    opc+= 0.1;
+    opc+= 0.01;
     if (opc > 1) {
         opc = 1;
     }
@@ -92,8 +99,7 @@ function chg_opc() {
 }
 
 function chg_opc2() {
-    opc += 0.1;
-    console.log(opc.toString());
+    opc += 0.01;
     if (opc > 1) {
         opc = 1;
     }

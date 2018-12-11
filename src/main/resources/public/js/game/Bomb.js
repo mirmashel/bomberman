@@ -32,7 +32,11 @@ var Bomb = function (id, position, strength) {
 };
 
 Bomb.prototype.remove = function() {
-    var bgAudio= document.getElementById('bomb');
+
+    var bgAudio = new Audio();
+    bgAudio.src = document.getElementById('bomb').src;
+       // document.getElementById('bomb');
+    bgAudio.loop = false;
     bgAudio.play();
     gGameEngine.stage.removeChild(this.bmp);
 };

@@ -38,10 +38,6 @@ var Player = function (id, position) {
 };
 
 Player.prototype.remove = function () {
-    bgAudio= document.getElementById('background');
-    bgAudio.pause();
-    bgAudio= document.getElementById('sad');
-    bgAudio.play();
     gGameEngine.stage.removeChild(this.bmp);
 };
 
@@ -54,7 +50,8 @@ Player.prototype.animate = function (animation) {
 Player.prototype.update = function () {
     if (!this.alive) {
         this.animate('dead');
-        this.remove();
+        return
+        //this.remove();
         //my_reload();
     }
 
