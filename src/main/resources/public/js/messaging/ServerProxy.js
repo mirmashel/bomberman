@@ -64,7 +64,7 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
             setInterval(function(){chg_opc2()}, 15);
             setTimeout(function(){my_reload();}, 3000);
         }
-        if (msg.topic === 'NAMES') {
+        if (msg.topic === 'COUNT') {
             var names = JSON.parse(msg.data);
             console.log(names)
         }
