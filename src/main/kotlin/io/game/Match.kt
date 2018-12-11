@@ -41,8 +41,9 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 val type = when (field[i, j]) {
                     is Box -> "Wood"
                     is Wall -> "Wall"
-                    else -> return
+                    else -> ""
                 }
+                if (type == "") continue
                 val act = Obj(field[i, j].id, type, Cords(j * mult, i * mult))
                 addToOutputQueue(act.toJson())
             }
