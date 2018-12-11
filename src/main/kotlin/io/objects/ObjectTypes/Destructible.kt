@@ -1,5 +1,5 @@
 package io.objects.ObjectTypes
 
-interface Destructable {
+interface Destructible {
     fun destroy()
 }

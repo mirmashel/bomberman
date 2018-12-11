@@ -23,6 +23,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     val connections = ConnectionPool()
     var currentPlayers = numberOfPlayers
     var started = false
+    var ids = 0
+    var rand = abs(Random.nextInt()) % 4
 
     fun addPlayer(name: String, session: WebSocketSession) {
         players += Pair(name, Player(ids++, this, name,
@@ -39,42 +41,39 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 val type = when (field[i, j]) {
                     is Box -> "Wood"
                     is Wall -> "Wall"
-                    else -> ""
+                    else -> return
                 }
-                if (type != "") {
-                    val act = Obj(field[i, j].id, type, Cords(j * mult, i * mult))
-                    addToOutputQueue(act.toJson())
-                    if (type == "Wood") {
-                    }
-                }
+                val act = Obj(field[i, j].id, type, Cords(j * mult, i * mult))
+                addToOutputQueue(act.toJson())
             }
         }
     }
 
-    fun sendPlayerStatus() = players.values.forEach {
+    // sends positions
+    fun sendPlayersStatus() = players.values.forEach {
         val chel = Chel(it.id, "Pawn", Cords(it.yPos, it.xPos), it.isAlive, "IDLE")
         addToOutputQueue(chel.toJson())
     }
 
+    // sends names
     fun sendPlayers() {
         connections.broadcast(Message(Topic.COUNT, (connections.connections.values).toJson()).toJson())
     }
 
-    fun removePlayer(name: String) = players.remove(name)
-
     override fun tick(elapsed: Long) {
         parseInput()
         parseOutput()
-        // sendPlayerStatus()
-        if (connections.countOpenWebsocks() == 0 || numberOfPlayers != 1 && currentPlayers <= 1 || currentPlayers <= 0) {
-            // addToOutputQueue(Topic.END_MATCH, "")
-            var alive = players.values.find {
+        // if game has ended
+        if (connections.countOpenWebsocks() == 0 ||
+                numberOfPlayers != 1 && currentPlayers <= 1 || currentPlayers <= 0) {
+            val alive = players.values.find {
                 it.isAlive
             }
             if (alive != null)
                 connections.send(alive.session, Message(Topic.WIN, "").toJson())
             tickables.isEnded = true
-            while (outputQueue.isNotEmpty()) {}
+            while (outputQueue.isNotEmpty()) {
+            }
             log.info("Game $id ended")
             connections.shutdown()
         }
@@ -107,22 +106,15 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     fun addToOutputQueue(data: String) = outputQueue.add(data)
 
-    fun sendNames() {
-        connections.broadcast(Message(Topic.NAMES, players.values.map { it.name to it.id }.toJson()).toJson())
-    }
-
     fun start() {
         tickables.registerTickable(this)
         players.values.forEach { tickables.registerTickable(it) }
         sendGameField()
-        sendPlayerStatus()
+        sendPlayersStatus()
         started = true
         tickables.gameLoop()
     }
 
-    var ids = 0
-
-    var rand = abs(Random.nextInt()) % 4
     companion object {
         var log = logger()
         const val length = 17

@@ -15,7 +15,14 @@ import io.util.logger
 import io.util.toJson
 import org.springframework.web.socket.WebSocketSession
 
-class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var yPos: Int, val session: WebSocketSession) : Tickable {
+class Player(
+    val id: Int,
+    val game: Match,
+    private val name: String,
+    var xPos: Int,
+    var yPos: Int,
+    val session: WebSocketSession
+) : Tickable {
     var explosionSize = 1
     var speed = 3
     var maxNumberOfBombs = 1
@@ -26,26 +33,28 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             field = value
         }
     var direction = Actions.IDLE
-    var prib = 0
 
-    val xCenter: Int
+    // magic numbers
+    private val xCenter: Int
         get() = xPos + 2 * Match.mult / 5
-    val yCenter: Int
+    private val yCenter: Int
         get() = yPos + Match.mult / 3
 
-    val cordsOnFieldX: Int
+    private val cordsOnFieldX: Int
         get() = xCenter.div(Match.mult)
-    val cordsOnFieldY: Int
+    private val cordsOnFieldY: Int
         get() = yCenter.div(Match.mult)
 
-    fun downBorderX(x: Int): Int = x
-    fun leftBorderY(y: Int): Int = y + Match.mult / 8
-    fun upBorderX(x: Int): Int = x + Match.mult / 2
-    fun rightBorderY(y: Int): Int = y + 2 * Match.mult / 3
+    // for checking collisions
+    private fun downBorderX(x: Int): Int = x
+
+    private fun leftBorderY(y: Int): Int = y + Match.mult / 8
+    private fun upBorderX(x: Int): Int = x + Match.mult / 2
+    private fun rightBorderY(y: Int): Int = y + 2 * Match.mult / 3
 
     val playerInfo = Chel(id, "Pawn", Cords(yPos, xPos), isAlive, direction.name.substringAfter("MOVE_"))
 
-    fun kill() {
+    private fun kill() {
         isAlive = false
         log.info("Player $name dead")
         game.currentPlayers--
@@ -53,11 +62,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         game.connections.send(session, Message(Topic.DEAD, "").toJson())
     }
 
-    fun checkStep(obj: GameObject) =
+    private fun checkStep(obj: GameObject) =
             obj is Wall || obj is Box || (obj is Bomb && obj.owner != this)
-
-    fun checkFire(obj: GameObject) =
-            obj is Fire
 
     fun updatePos(x: Int, y: Int) {
         xPos = x
@@ -66,19 +72,22 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         playerInfo.position.y = x
     }
 
-    var curIdle = 0
+    var curIdle = 0 // ticks since receiving "IDLE"
+    var prib = 0 // number of "MOVE" topics received
 
     override fun tick(elapsed: Long) {
         var nX: Int = xPos
         var nY: Int = yPos
 
+        // player will move when 3rd "MOVE" is received
         if (prib == 0) {
             when (direction) {
                 Actions.MOVE_UP -> nX += speed
                 Actions.MOVE_LEFT -> nY -= speed
                 Actions.MOVE_DOWN -> nX -= speed
                 Actions.MOVE_RIGHT -> nY += speed
-                else -> {}
+                else -> {
+                }
             }
             prib++
         } else
@@ -88,15 +97,17 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val newX2 = upBorderX(nX)
         val newY2 = rightBorderY(nY)
 
-        val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)] // левый нижний
-        val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)] // правый нижний
-        val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)] // левый верхний
-        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)] // правый верхний
+        val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)] // lower left
+        val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)] // lower right
+        val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)] // upper left
+        val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)] // upper right
 
-        if (isAlive && (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2))) {
+        // fire kills
+        if (isAlive && (obj1 is Fire || obj2 is Fire || obj3 is Fire || obj4 is Fire)) {
             kill()
         }
 
+        // checking collisions
         when {
             obj1 is Wall -> {
                 when {
@@ -147,6 +158,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4))
             updatePos(nX, nY)
 
+        // resetting direction player is facing
         when {
             direction.name != "IDLE" -> {
                 curIdle = 0
@@ -167,9 +179,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         direction = Actions.IDLE
     }
 
-    private fun send() {
-        game.addToOutputQueue(playerInfo.json())
-    }
+    private fun send() = game.addToOutputQueue(playerInfo.json())
 
     fun move(a: Actions) {
         direction = a
@@ -186,7 +196,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     companion object {
-        val maxIdles = 20
+        const val maxIdles = 20
         val log = logger()
     }
 }

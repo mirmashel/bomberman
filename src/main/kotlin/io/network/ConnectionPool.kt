@@ -13,9 +13,8 @@ class ConnectionPool {
             try {
                 session.sendMessage(TextMessage(msg))
             } catch (e: Exception) {
-                log.warn("Websock dropt")
+                log.warn("Websock dropped")
             }
-
         }
     }
 
@@ -23,7 +22,6 @@ class ConnectionPool {
             .count {
                 it.key.isOpen
             }
-
 
     fun broadcast(msg: String) {
         connections.forEach { session, _ ->

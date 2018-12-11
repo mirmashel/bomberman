@@ -5,12 +5,12 @@ import io.game.Match
 import io.game.Obj
 import io.game.Player
 import io.game.Ticker
-import io.objects.ObjectTypes.Destructable
+import io.objects.ObjectTypes.Destructible
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
 
 class Bomb(val owner: Player, val game: Match, private val xPos: Int, private val yPos: Int) :
-        Tickable, Destructable,
+        Tickable, Destructible,
         GameObject(game.ids++) {
 
     override fun destroy() {
@@ -56,7 +56,7 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
         }
     }
 
-    fun createFire(x: Int, y: Int) {
+    private fun createFire(x: Int, y: Int) {
         val f = Fire(game, x * Match.mult, y * Match.mult)
         game.field[x, y] = f
         game.addToOutputQueue(Obj(f.id, "Fire", Cords(y * Match.mult, x * Match.mult)).json())
