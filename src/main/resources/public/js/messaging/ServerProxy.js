@@ -38,7 +38,8 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
     var self = this;
     this.socket.onmessage = function (event) {
         var msg = JSON.parse(event.data);
-        console.log("alo");
+        if (msg.topic === "DEAD")
+            // Значит умер
         if (self.handler[msg.topic] === undefined) {
             return;
         }
