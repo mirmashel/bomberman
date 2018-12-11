@@ -26,6 +26,7 @@ GameEngine.prototype.load = function () {
         self.asset.bonus.speed = queue.getResult("bonus_speed");
         self.asset.bonus.bombs = queue.getResult("bonus_bomb");
         self.asset.bonus.explosion = queue.getResult("bonus_explosion");
+        self.asset.bonus.portal = queue.getResult("bonus_portal");
         self.initCanvas();
     });
     queue.loadManifest([
@@ -35,6 +36,7 @@ GameEngine.prototype.load = function () {
         {id: "tile_wood", src: "img/tile_wood.png"},
         {id: "bomb", src: "img/bomb.png"},
         {id: "fire", src: "img/fire.png"},
+        {id: "bonus_portal", src: "img/bonus_portal.png"},
         {id: "bonus_speed", src: "img/bonus_speed.png"},
         {id: "bonus_bomb", src: "img/bonus_bomb.png"},
         {id: "bonus_explosion", src: "img/bonus_explosion.png"},
