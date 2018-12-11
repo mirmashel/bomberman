@@ -120,7 +120,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     fun addToOutputQueue(data: String) = outputQueue.add(data)
 
     fun sendNames() {
-        connections.broadcast(Message(Topic.NAMES, players.values.map { it.name }.toJson()).toJson())
+        connections.broadcast(Message(Topic.NAMES, players.values.map { it.name to it.id }.toJson()).toJson())
     }
 
     fun start() {
