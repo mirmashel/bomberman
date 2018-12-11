@@ -4,6 +4,9 @@ import io.objects.Box
 import io.objects.Floor
 import io.objects.ObjectTypes.GameObject
 import io.objects.Wall
+import io.util.logger
+import java.lang.Math.abs
+import kotlin.random.Random
 
 class GameField(val game: Match, private val length: Int, private val height: Int) {
     var field: Array<Array<GameObject>> = Array(length) {
@@ -30,5 +33,18 @@ class GameField(val game: Match, private val length: Int, private val height: In
                 }
             }
         }
+    }
+
+    fun getRandomFloor(): Cords {
+        val emptyTiles = emptyList<Cords>().toMutableList()
+        field.forEachIndexed { i, arr ->
+            arr.forEachIndexed { j, obj ->
+                if (obj is Floor) {
+                    emptyTiles += Cords(i, j)
+                }
+            }
+        }
+        logger().info(emptyTiles.size.toString())
+        return emptyTiles[abs(Random.nextInt() % emptyTiles.size)]
     }
 }

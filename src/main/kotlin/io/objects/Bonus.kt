@@ -15,6 +15,7 @@ class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : Game
             "BOMBS" -> p.maxNumberOfBombs++
             "SPEED" -> p.speed++
             "RANGE" -> p.explosionSize++
+            "PORTAL" -> teleport(p)
             else -> {
             }
         }
@@ -23,5 +24,11 @@ class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : Game
                 Cords(y * Match.mult, x * Match.mult),
                 type.name).toJson())
         game.field[x, y] = Floor()
+    }
+
+    fun teleport(p: Player) {
+        val newPos = game.field.getRandomFloor()
+        p.updatePos(newPos.x * Match.mult, newPos.y * Match.mult)
+        game.addToOutputQueue(p.playerInfo.json())
     }
 }

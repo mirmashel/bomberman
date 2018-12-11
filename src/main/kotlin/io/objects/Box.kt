@@ -18,6 +18,7 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
             rnd < dropChance -> Bonus(game, xPos, yPos, BonusType.BOMBS)
             rnd < dropChance * 2 -> Bonus(game, xPos, yPos, BonusType.RANGE)
             rnd < dropChance * 3 -> Bonus(game, xPos, yPos, BonusType.SPEED)
+            rnd < dropChance * 4 -> Bonus(game, xPos, yPos, BonusType.PORTAL)
             else -> Floor()
         }
         // logger().info(game.field[xPos, yPos].t.toString())
@@ -32,6 +33,6 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObj
     }
 
     companion object {
-        const val dropChance = 3
+        const val dropChance = 4
     }
 }
