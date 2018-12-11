@@ -4,5 +4,6 @@ enum class Topic {
     DEAD,
     WIN,
     REPLICA,
-    NAMES
+    NAMES,
+    COUNT
 }

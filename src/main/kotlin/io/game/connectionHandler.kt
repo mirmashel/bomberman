@@ -44,6 +44,7 @@ class ConnectionHandler : TextWebSocketHandler() {
                 match.connections.add(session, json.get("name").asText())
                 websocks[session] = json.get("name").asText()
                 players[json.get("name").asText()] = match
+                match.sendPlayers()
             }
             "MOVE" -> {
                 val match = players[websocks[session]]!!

@@ -52,13 +52,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 }
                 if (type != "") {
                     val act = Obj(field[i, j].id, type, Cords(j * mult, i * mult))
-                    // log.info(act.toJson())
-                    // var alo = "\"type\":\"$type\",position\":{\"y\":${i * 10},\"x\":$j\")"
-                    // connections.broadcast("[{\"id\":1,\"type\":\"Pawn\",\"position\":{\"x\":800,\"y\":32},\"alive\":true,\"direction\":\"\"}]")
                     addToOutputQueue(act.toJson())
-                    if (type == "Wood") { // delete
-                        // addToOutputQueue(act.toJson())
-                        // field[i, j] = Floor()
+                    if (type == "Wood") {
                     }
                 }
             }
@@ -68,6 +63,10 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     fun sendPlayerStatus() = players.values.forEach {
         val chel = Chel(it.id, "Pawn", Cords(it.yPos, it.xPos), it.isAlive, "IDLE")
         addToOutputQueue(chel.toJson())
+    }
+
+    fun sendPlayers() {
+        connections.broadcast(Message(Topic.COUNT, (connections.connections.values).toJson()).toJson())
     }
 
     fun removePlayer(name: String) = players.remove(name)
@@ -132,13 +131,12 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     var ids = 0
 
+    var rand = abs(Random.nextInt()) % 4
     companion object {
         var log = logger()
         const val length = 17
         const val height = 27
         const val mult = 32
-        const val step = 64
-        var rand = abs(Random.nextInt()) % 4
         val startingPositions = listOf(
                 Pair(1, 1), Pair(length - 2, 1),
                 Pair(1, height - 2), Pair(length - 2, height - 2)
