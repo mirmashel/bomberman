@@ -51,7 +51,6 @@ Player.prototype.update = function () {
     if (!this.alive) {
         this.animate('dead');
         this.remove();
-        cnt--;
 
         //my_reload();
     }

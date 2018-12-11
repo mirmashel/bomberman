@@ -47,14 +47,9 @@ GameEngine.prototype.initCanvas = function () {
     this.stage.update();
 };
 
-var cps;
-var cnt;
-
 GameEngine.prototype.startGame = function (numb) {
     this.menu.hide();
     this.game = new Game(this.stage);
-    cps = numb;
-    cnt = numb;
     this.game.start(numb);
 };
 
