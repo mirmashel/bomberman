@@ -42,14 +42,14 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
         if (msg.topic === 'DEAD') {
             $("#img2").css({"display": "block"});
             $("#img2").css({"opacity": "0"});
-            setInterval(function(){chg_opc()}, 250);
+            setInterval(function(){chg_opc()}, 150);
             setTimeout(function(){my_reload();}, 3000);
 
         }
         if (msg.topic === 'WIN') {
             $("#img3").css({"display": "block"});
             $("#img3").css({"opacity": "0"});
-            setInterval(function(){chg_opc2()}, 250);
+            setInterval(function(){chg_opc2()}, 150);
             setTimeout(function(){my_reload();}, 3000);
         }
 

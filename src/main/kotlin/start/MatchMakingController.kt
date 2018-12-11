@@ -27,7 +27,7 @@ class MatchMakingController {
     val gamesFor4: ConcurrentHashMap<String, Int> = ConcurrentHashMap()
     val log = logger()
     val players = ConcurrentLinkedQueue<String>()
-    var userSet: MutableSet<String> = mutableSetOf();
+    var userSet: MutableSet<String> = mutableSetOf()
     @PostConstruct
     fun rel() {
         ToServer.reload() // при запуске матчмэйкера удалить все игры
@@ -43,7 +43,7 @@ class MatchMakingController {
             log.info("Ya zdes'")
             return ResponseEntity.badRequest().body("You should login first")
         }
-        return when(players) {
+        return when (players) {
             "1" -> joinToGame1(name)
             "2" -> joinToGame2(name)
             "4" -> joinToGame4(name)
@@ -124,7 +124,7 @@ class MatchMakingController {
             return ResponseEntity.badRequest().body("User with this name is already logged")
         }
 
-        if (a.getAllWhere(Op.build { Users.login eq name}).isEmpty()) {
+        if (a.getAllWhere(Op.build { Users.login eq name }).isEmpty()) {
             return ResponseEntity.badRequest().body("User with this name doesn't exist")
         }
         var curUsr = a.getAllWhere(Op.build { Users.login eq name })

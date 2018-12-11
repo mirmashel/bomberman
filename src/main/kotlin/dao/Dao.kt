@@ -17,5 +17,4 @@ interface Dao<T> {
      * INSERT INTO ...
      */
     fun insert(t: T)
-
 }
