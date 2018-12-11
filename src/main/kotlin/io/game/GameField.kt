@@ -3,12 +3,11 @@ package io.game
 import io.objects.Box
 import io.objects.Floor
 import io.objects.ObjectTypes.GameObject
-import io.objects.TileType
 import io.objects.Wall
 
 class GameField(val game: Match, private val length: Int, private val height: Int) {
     var field: Array<Array<GameObject>> = Array(length) {
-        Array(height) { GameObject(TileType.BOX, -1) }
+        Array(height) { GameObject(-1) }
     }
 
     operator fun get(i: Int, j: Int) = field[i][j]

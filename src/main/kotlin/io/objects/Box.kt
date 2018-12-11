@@ -11,7 +11,7 @@ import io.util.toJson
 import kotlin.math.abs
 import kotlin.random.Random
 
-class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObject(TileType.BOX, game.ids++) {
+class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructable, GameObject(game.ids++) {
     override fun destroy() {
         val rnd = abs(Random.nextInt() % 100)
         game.field[xPos, yPos] = when {

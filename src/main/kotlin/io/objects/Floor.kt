@@ -2,4 +2,4 @@ package io.objects
 
 import io.objects.ObjectTypes.GameObject
 
-class Floor : GameObject(TileType.FLOOR, -1)
+class Floor : GameObject(-1)

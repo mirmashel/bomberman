@@ -47,13 +47,10 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun kill() {
         isAlive = false
-        // game.removePlayer(name)
         log.info("Player $name dead")
         game.currentPlayers--
         game.addToOutputQueue(playerInfo.json())
         game.connections.send(session, Message(Topic.DEAD, "").toJson())
-        // game.connections.connections.minus(session)
-        // session.close()
     }
 
     fun checkStep(obj: GameObject) =
@@ -69,6 +66,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         playerInfo.position.y = x
     }
 
+    var curIdle = 0
+
     override fun tick(elapsed: Long) {
         var nX: Int = xPos
         var nY: Int = yPos
@@ -79,8 +78,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
                 Actions.MOVE_LEFT -> nY -= speed
                 Actions.MOVE_DOWN -> nX -= speed
                 Actions.MOVE_RIGHT -> nY += speed
-                else -> {
-                }
+                else -> {}
             }
             prib++
         } else
@@ -148,7 +146,17 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
         if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4))
             updatePos(nX, nY)
-        send(direction.name.substringAfter("MOVE_"))
+
+        when {
+            direction.name != "IDLE" -> {
+                curIdle = 0
+                playerInfo.direction = direction.name.substringAfter("MOVE_")
+            }
+            curIdle == maxIdles -> playerInfo.direction = "IDLE"
+            else -> curIdle++
+        }
+        send()
+
         if (isAlive)
             when {
                 obj1 is Bonus -> obj1.pickUp(this)
@@ -159,8 +167,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         direction = Actions.IDLE
     }
 
-    private fun send(act: String) {
-        playerInfo.direction = act
+    private fun send() {
+
         game.addToOutputQueue(playerInfo.json())
     }
 
@@ -179,6 +187,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     companion object {
+        val maxIdles = 20
         val log = logger()
     }
 }

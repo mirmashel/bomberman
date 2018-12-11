@@ -7,7 +7,7 @@ import io.game.Ticker
 import io.objects.ObjectTypes.GameObject
 import io.objects.ObjectTypes.Tickable
 
-class Fire(val game: Match, val xPos: Int, val yPos: Int) : GameObject(TileType.FIRE, game.ids++), Tickable {
+class Fire(val game: Match, val xPos: Int, val yPos: Int) : GameObject(game.ids++), Tickable {
     private var timer = Ticker.FPS / 7
 
     override fun tick(elapsed: Long) {
