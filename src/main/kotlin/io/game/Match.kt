@@ -64,9 +64,9 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         parseInput()
         parseOutput()
         // if game has ended
-        if (connections.countOpenWebsocks() == 0 ||
-                numberOfPlayers != 1 && currentPlayers <= 1 || currentPlayers <= 0) {
-            val alive = players.values.find {
+        if ((numberOfPlayers != 1 && connections.countOpenWebsocks() <= 1) || currentPlayers <= 0) {
+            // addToOutputQueue(Topic.END_MATCH, "")
+            var alive = players.values.find {
                 it.isAlive
             }
             if (alive != null)

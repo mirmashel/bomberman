@@ -57,7 +57,9 @@ class Player(
     private fun kill() {
         isAlive = false
         log.info("Player $name dead")
-        game.currentPlayers--
+        //game.currentPlayers--
+        game.connections.connections.remove(session)
+        game.sendPlayers()
         game.addToOutputQueue(playerInfo.json())
         game.connections.send(session, Message(Topic.DEAD, "").toJson())
     }
@@ -76,6 +78,9 @@ class Player(
     var prib = 0 // number of "MOVE" topics received
 
     override fun tick(elapsed: Long) {
+        if (!session.isOpen) {
+            kill()
+        }
         var nX: Int = xPos
         var nY: Int = yPos
 
