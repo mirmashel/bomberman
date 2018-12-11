@@ -37,14 +37,19 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
     //this.socket = new SockJS(gClusterSettings.gameServerUrl());
     this.socket = new SockJS("http://localhost:8090/connect");
     var self = this;
+    var isStarted = false;
     this.socket.onmessage = function (event) {
+        if (!isStarted) {
+            isStarted = true;
+            var bgAudio= document.getElementById('background');
+            bgAudio.play();
+        }
         var msg = JSON.parse(event.data);
         if (msg.topic === 'DEAD') {
             $("#img2").css({"display": "block"});
             $("#img2").css({"opacity": "0"});
             setInterval(function(){chg_opc()}, 150);
             setTimeout(function(){my_reload();}, 3000);
-
         }
         if (msg.topic === 'WIN') {
             $("#img3").css({"display": "block"});
@@ -52,7 +57,10 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
             setInterval(function(){chg_opc2()}, 150);
             setTimeout(function(){my_reload();}, 3000);
         }
-
+        if (msg.topic === 'NAMES') {
+            var names = JSON.parse(msg.data);
+            console.log(names)
+        }
         if (self.handler[msg.topic] === undefined) {
             return;
         }
