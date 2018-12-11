@@ -2,12 +2,7 @@ package io.network
 
 enum class Topic {
     DEAD,
-    HELLO,
-    MOVE,
-    PLANT_BOMB,
+    WIN,
     REPLICA,
-    START,
-    END_MATCH,
-    POSSESS,
-    FINISH
+    NAMES
 }

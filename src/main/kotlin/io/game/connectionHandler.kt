@@ -26,8 +26,7 @@ class ConnectionHandler : TextWebSocketHandler() {
         fun startMatch(gameId: String) {
             val match = matches[gameId]!!
             threads[gameId] = Thread {
-                while (match.connections.connections.size < match.numberOfPlayers) {
-                }
+                while (match.connections.connections.size < match.numberOfPlayers) {}
                 match.start()
             }
             threads[gameId]!!.start()

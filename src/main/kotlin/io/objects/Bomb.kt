@@ -49,7 +49,7 @@ class Bomb(val owner: Player, val game: Match, private val xPos: Int, private va
                 tile.explode()
                 false
             }
-            is Wall -> false
+            is Wall, is Fire -> false
             else -> {
                 true
             }

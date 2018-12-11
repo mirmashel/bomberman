@@ -21,6 +21,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     val players = mutableMapOf<String, Player>()
     val tickables = Ticker()
     val connections = ConnectionPool()
+    var currentPlayers = numberOfPlayers
 
     fun findPlayer(x: Int, y: Int): Player? {
         players.values.forEach {
@@ -75,8 +76,13 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         parseInput()
         parseOutput()
         // sendPlayerStatus()
-        if (numberOfPlayers != 1 && players.size <= 1) {
+        if (numberOfPlayers != 1 && currentPlayers <= 1) {
             // addToOutputQueue(Topic.END_MATCH, "")
+            var alive = players.values.find {
+                it.isAlive
+            }
+            if (alive != null)
+                connections.send(alive.session, Message(Topic.WIN, "").toJson())
             tickables.isEnded = true
         }
     }
@@ -113,12 +119,16 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     fun addToOutputQueue(data: String) = outputQueue.add(data)
 
+    fun sendNames() {
+        connections.broadcast(Message(Topic.NAMES, players.values.map { it.name }.toJson()).toJson())
+    }
+
     fun start() {
         tickables.registerTickable(this)
         players.values.forEach { tickables.registerTickable(it) }
         sendGameField()
         sendPlayerStatus()
-        connections.broadcast(Topic.START.toJson())
+        sendNames()
         tickables.gameLoop()
     }
 
