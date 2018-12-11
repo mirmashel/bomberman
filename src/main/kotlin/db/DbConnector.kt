@@ -22,7 +22,7 @@ object DbConnector {
                 password = password
             )
         } catch (e: Exception) {
-            println(e)
+            log.info(e.toString())
         }
 
         log.info("Success. DbConnector init.")

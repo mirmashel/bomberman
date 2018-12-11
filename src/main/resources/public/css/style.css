@@ -143,3 +143,20 @@ h1 strong {
      left: 0%;
      display: none;
  }
+
+ #numbers {
+     position:relative;
+     top: -220px;
+     left: 10%;
+     display: inline;
+     font-size: 27px;
+     font-weight: bold;
+ }
+
+ #curPlayers {
+     position: relative;
+     top: -220px;
+     left: 20%;
+     font-size:18px;
+     display:inline;
+ }

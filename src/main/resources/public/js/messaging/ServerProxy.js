@@ -60,9 +60,28 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
             setInterval(function(){chg_opc2()}, 15);
             setTimeout(function(){my_reload();}, 3000);
         }
+        var names = [];
         if (msg.topic === 'COUNT') {
-            var names = JSON.parse(msg.data);
-            console.log(names)
+            JSON.parse(msg.data, function(key,value) {
+                console.log(key.toString());
+                console.log("value:   " + value.toString());
+                if (key.toString() == 'first') {
+                    names.push(value.toString());
+                }
+            });
+            document.getElementById("numbers").innerHTML = 'Current Players(' + names.length.toString() +
+                '/' + nmb.toString() + '):';
+                document.getElementById("curPlayers").innerHTML = '<ul>';
+            for (var ind = 0; ind < names.length; ind++) {
+                console.log(names[ind]);
+                document.getElementById("curPlayers").innerHTML += '<li>' + names[ind].toString() + '</li>';
+            }
+            document.getElementById("curPlayers").innerHTML += '</ul>';
+        }
+        if (nmb == 4) {
+            $("#numbers").css({"top": "-200px"});
+            $("#curPlayers").css({"top": "-200px"});
+
         }
         if (self.handler[msg.topic] === undefined) {
             return;
