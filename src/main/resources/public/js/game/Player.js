@@ -51,7 +51,6 @@ Player.prototype.update = function () {
     if (!this.alive) {
         this.animate('dead');
         this.remove();
-
         //my_reload();
     }
 
@@ -67,6 +66,4 @@ Player.prototype.update = function () {
         this.animate('idle');
     }
 };
-
-
 

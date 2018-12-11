@@ -52,6 +52,7 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
             setInterval(function(){chg_opc2()}, 250);
             setTimeout(function(){my_reload();}, 3000);
         }
+
         if (self.handler[msg.topic] === undefined) {
             return;
         }
@@ -90,3 +91,4 @@ function chg_opc2() {
     }
     $("#img3").css({"opacity": opc.toString()});
 }
+
