@@ -95,9 +95,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)] // правый нижний
         val obj3 = game.field[newX2.div(Match.mult), newY1.div(Match.mult)] // левый верхний
         val obj4 = game.field[newX2.div(Match.mult), newY2.div(Match.mult)]
-        // log.info("${obj1::class} ${obj2::class} ${obj3::class} ${obj4::class}")
 
-        if (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2)) {
+        if (isAlive && (checkFire(obj1) || checkFire(obj2) || checkFire(obj2) || checkFire(obj2))) {
             kill()
         }
         if (direction.name != "IDLE" && checkStep(obj1) && checkStep(obj2) && checkStep(obj3) && checkStep(obj4)) {
