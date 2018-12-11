@@ -66,3 +66,4 @@ Player.prototype.update = function () {
         this.animate('idle');
     }
 };
+
