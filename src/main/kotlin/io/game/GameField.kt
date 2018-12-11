@@ -8,7 +8,7 @@ import io.objects.Wall
 
 class GameField(val game: Match, private val length: Int, private val height: Int) {
     var field: Array<Array<GameObject>> = Array(length) {
-        Array(height) { GameObject(TileType.BOX) }
+        Array(height) { GameObject(TileType.BOX, -1) }
     }
 
     operator fun get(i: Int, j: Int) = field[i][j]
@@ -23,7 +23,7 @@ class GameField(val game: Match, private val length: Int, private val height: In
         field.forEachIndexed { i, row ->
             row.forEachIndexed { j, _ ->
                 if (i == 0 || i == length - 1 || j == 0 || j == height - 1 || (i % 2 == 0 && j % 2 == 0)) {
-                    field[i][j] = Wall()
+                    field[i][j] = Wall(game)
                 } else if (cornerXIndex.contains(i) && cornerYIndex.contains(j)) {
                     field[i][j] = Floor()
                 } else {

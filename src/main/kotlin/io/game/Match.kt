@@ -76,7 +76,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         parseInput()
         parseOutput()
         // sendPlayerStatus()
-        if (numberOfPlayers != 1 && currentPlayers <= 1) {
+        if (numberOfPlayers != 1 && currentPlayers <= 1 || currentPlayers <= 0) {
             // addToOutputQueue(Topic.END_MATCH, "")
             var alive = players.values.find {
                 it.isAlive
@@ -84,17 +84,15 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
             if (alive != null)
                 connections.send(alive.session, Message(Topic.WIN, "").toJson())
             tickables.isEnded = true
+            while (outputQueue.isNotEmpty()) {}
+            log.info("Game $id ended")
+            connections.shutdown()
         }
     }
 
     private fun parseOutput() {
-        /*while (!outputQueue.isEmpty()) {
-            var x = outputQueue.poll()
-            //log.info(x)
-            connections.broadcast(x)
-        }*/
-        // log.info(x)
-        connections.broadcast(Message(Topic.REPLICA, outputQueue.toJson()).toJson())
+        if (outputQueue.isNotEmpty())
+            connections.broadcast(Message(Topic.REPLICA, outputQueue.toJson()).toJson())
         outputQueue.clear()
     }
 
@@ -132,8 +130,9 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         tickables.gameLoop()
     }
 
+    var ids = 0
+
     companion object {
-        var ids = 0
         var log = logger()
         const val length = 17
         const val height = 27

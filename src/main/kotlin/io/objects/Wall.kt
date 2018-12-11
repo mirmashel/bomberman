@@ -1,5 +1,6 @@
 package io.objects
 
+import io.game.Match
 import io.objects.ObjectTypes.GameObject
 
-class Wall : GameObject(TileType.WALL)
+class Wall(game: Match) : GameObject(TileType.WALL, game.ids++)

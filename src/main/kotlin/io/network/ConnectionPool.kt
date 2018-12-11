@@ -16,7 +16,8 @@ class ConnectionPool {
 
     fun broadcast(msg: String) {
         connections.forEach { session, _ ->
-            send(session, msg) }
+            send(session, msg)
+        }
     }
 
     fun shutdown() {

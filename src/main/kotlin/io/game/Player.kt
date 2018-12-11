@@ -25,7 +25,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
             playerInfo.alive = value
             field = value
         }
-    private var idleCounter = 0
     var direction = Actions.IDLE
     var prib = 0
 
@@ -62,6 +61,7 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
 
     fun checkFire(obj: GameObject) =
             obj is Fire
+
     fun updatePos(x: Int, y: Int) {
         xPos = x
         yPos = y
@@ -79,7 +79,8 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
                 Actions.MOVE_LEFT -> nY -= speed
                 Actions.MOVE_DOWN -> nX -= speed
                 Actions.MOVE_RIGHT -> nY += speed
-                else -> {}
+                else -> {
+                }
             }
             prib++
         } else
@@ -88,7 +89,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)
         val newY2 = rightBorderY(nY)
-        idleCounter = 0
 
         val obj1 = game.field[newX1.div(Match.mult), newY1.div(Match.mult)] // левый нижний
         val obj2 = game.field[newX1.div(Match.mult), newY2.div(Match.mult)] // правый нижний
@@ -179,7 +179,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     companion object {
-        const val maxIdleTick = Ticker.FPS / 30
         val log = logger()
     }
 }

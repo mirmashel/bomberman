@@ -11,7 +11,7 @@ import io.objects.ObjectTypes.Tickable
 
 class Bomb(val owner: Player, val game: Match, private val xPos: Int, private val yPos: Int) :
         Tickable, Destructable,
-        GameObject(TileType.BOMB) {
+        GameObject(TileType.BOMB, game.ids++) {
 
     override fun destroy() {
         val newX = xPos.div(Match.mult)

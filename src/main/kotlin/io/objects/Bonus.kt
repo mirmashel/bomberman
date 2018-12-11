@@ -8,7 +8,7 @@ import io.objects.ObjectTypes.BonusType
 import io.objects.ObjectTypes.GameObject
 import io.util.toJson
 
-class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : GameObject(TileType.BONUS) {
+class Bonus(val game: Match, val x: Int, val y: Int, val type: BonusType) : GameObject(TileType.BONUS, game.ids++) {
 
     fun pickUp(p: Player) {
         when (type.name) {
