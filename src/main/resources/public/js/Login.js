@@ -15,6 +15,7 @@ function openGame() {
     document.body.style = "background-color: #ffffff;";
     document.getElementById('pisanina').innerText = name;
     $(".container").css({"display": "block"});
+    $("#img1").css({"display": "block"});
 }
 
 my_reload = function() {

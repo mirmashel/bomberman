@@ -6,6 +6,8 @@ var ServerProxy = function () {
     };
 };
 
+var opc = 0;
+
 ServerProxy.prototype.setupMessaging = function() {
     var self = this;
     gInputEngine.subscribe('up', function () {
@@ -33,12 +35,23 @@ ServerProxy.prototype.setupMessaging = function() {
 ServerProxy.prototype.connectToGameServer = function(gameId) {
     console.log(gClusterSettings.gameServerUrl());
     //this.socket = new SockJS(gClusterSettings.gameServerUrl());
-    this.socket = new SockJS("ws://localhost:8090/connect");
-    console.log(this.socket);
+    this.socket = new SockJS("http://localhost:8090/connect");
     var self = this;
     this.socket.onmessage = function (event) {
         var msg = JSON.parse(event.data);
-        console.log("alo");
+        if (msg.topic === 'DEAD') {
+            $("#img2").css({"display": "block"});
+            $("#img2").css({"opacity": "0"});
+            setInterval(function(){chg_opc()}, 250);
+            setTimeout(function(){my_reload();}, 3000);
+
+        }
+        if (msg.topic === 'WIN') {
+            $("#img3").css({"display": "block"});
+            $("#img3").css({"opacity": "0"});
+            setInterval(function(){chg_opc2()}, 250);
+            setTimeout(function(){my_reload();}, 3000);
+        }
         if (self.handler[msg.topic] === undefined) {
             return;
         }
@@ -60,3 +73,20 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
 
     this.setupMessaging();
 };
+
+function chg_opc() {
+    opc+= 0.1;
+    if (opc > 1) {
+        opc = 1;
+    }
+    $("#img2").css({"opacity": opc.toString()});
+}
+
+function chg_opc2() {
+    opc += 0.1;
+    console.log(opc.toString());
+    if (opc > 1) {
+        opc = 1;
+    }
+    $("#img3").css({"opacity": opc.toString()});
+}
