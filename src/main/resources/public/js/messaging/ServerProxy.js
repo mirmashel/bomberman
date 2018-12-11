@@ -69,10 +69,9 @@ ServerProxy.prototype.connectToGameServer = function(gameId) {
             JSON.parse(msg.data, function(key,value) {
                 console.log(key.toString());
                 console.log("value:   " + value.toString());
-                if (key.toString() == 'first') {
-                    names.push(value.toString());
-                }
+                names.push(value.toString());
             });
+            names.pop();
             document.getElementById("numbers").innerHTML = 'Current Players(' + names.length.toString() +
                 '/' + nmb.toString() + '):';
                 document.getElementById("curPlayers").innerHTML = '<ul>';
