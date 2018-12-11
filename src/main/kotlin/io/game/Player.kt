@@ -57,7 +57,7 @@ class Player(
     private fun kill() {
         isAlive = false
         log.info("Player $name dead")
-        //game.currentPlayers--
+        // game.currentPlayers--
         game.connections.connections.remove(session)
         game.sendPlayers()
         game.addToOutputQueue(playerInfo.json())

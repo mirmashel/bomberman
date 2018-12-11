@@ -18,7 +18,7 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     var field = GameField(this, length, height)
     val inputQueue = ConcurrentLinkedQueue<RawData>()
     private var outputQueue = ConcurrentLinkedQueue<String>()
-    private val players = mutableMapOf<String, Player>()
+    val players = mutableMapOf<String, Player>()
     val tickables = Ticker()
     val connections = ConnectionPool()
     var currentPlayers = numberOfPlayers
@@ -28,8 +28,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
 
     fun addPlayer(name: String, session: WebSocketSession) {
         players += Pair(name, Player(ids++, this, name,
-                (startingPositions[rand].first * mult).toInt(),
-                (startingPositions[rand].second * mult).toInt(),
+                (startingPositions[rand].first * mult),
+                (startingPositions[rand].second * mult),
                 session))
         rand++
         rand %= 4
@@ -64,8 +64,8 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
         parseInput()
         parseOutput()
         // if game has ended
-        if ((numberOfPlayers != 1 && connections.countOpenWebsocks() <= 1) || currentPlayers <= 0) {
-            // addToOutputQueue(Topic.END_MATCH, "")
+        val opensocks = connections.countOpenWebsocks()
+        if ((numberOfPlayers != 1 && opensocks <= 1) || opensocks == 0) {
             var alive = players.values.find {
                 it.isAlive
             }
@@ -75,7 +75,6 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
             while (outputQueue.isNotEmpty()) {
             }
             log.info("Game $id ended")
-            connections.shutdown()
         }
     }
 

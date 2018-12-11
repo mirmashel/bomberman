@@ -9,6 +9,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.handler.TextWebSocketHandler
+import java.lang.Thread.sleep
 import java.util.concurrent.ConcurrentHashMap
 
 class ConnectionHandler : TextWebSocketHandler() {
@@ -19,7 +20,17 @@ class ConnectionHandler : TextWebSocketHandler() {
         val matches = ConcurrentHashMap<String, Match>()
         val threads = ConcurrentHashMap<String, Thread>()
         fun addMatch(gameId: String, num: Int) {
-            matches[gameId] = Match(gameId, num)
+            val match = Match(gameId, num)
+            matches[gameId] = match
+            Thread {
+                while (!match.started) {
+                    if (match.players.size != 0 && match.connections.countOpenWebsocks() == 0) {
+                        startMatch(gameId)
+                        break
+                    }
+                    sleep(1_000)
+                }
+            }.start()
             // log.info("Matches " + matches.toString())
         }
 

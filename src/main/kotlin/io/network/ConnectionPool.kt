@@ -18,14 +18,10 @@ class ConnectionPool {
         }
     }
 
-    fun countOpenWebsocks(): Int {
-        var x = connections
+    fun countOpenWebsocks(): Int = connections
                 .count {
                     it.key.isOpen
                 }
-        log.info(x.toString())
-        return x
-    }
 
     fun broadcast(msg: String) {
         connections.forEach { session, _ ->
