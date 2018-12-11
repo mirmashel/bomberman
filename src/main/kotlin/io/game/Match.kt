@@ -18,19 +18,10 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
     var field = GameField(this, length, height)
     val inputQueue = ConcurrentLinkedQueue<RawData>()
     private var outputQueue = ConcurrentLinkedQueue<String>()
-    val players = mutableMapOf<String, Player>()
+    private val players = mutableMapOf<String, Player>()
     val tickables = Ticker()
     val connections = ConnectionPool()
     var currentPlayers = numberOfPlayers
-
-    fun findPlayer(x: Int, y: Int): Player? {
-        players.values.forEach {
-            if (it.xPos == x && it.yPos == y) {
-                return it
-            }
-        }
-        return null
-    }
 
     fun addPlayer(name: String, session: WebSocketSession) {
         players += Pair(name, Player(ids++, this, name,
@@ -39,7 +30,6 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
                 session))
         rand++
         rand %= 4
-        // numberOfPlayers++
     }
 
     private fun sendGameField() {

@@ -168,7 +168,6 @@ class Player(val id: Int, val game: Match, val name: String, var xPos: Int, var 
     }
 
     private fun send() {
-
         game.addToOutputQueue(playerInfo.json())
     }
 
