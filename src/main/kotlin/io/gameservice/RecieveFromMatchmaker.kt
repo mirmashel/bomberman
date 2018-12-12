@@ -1,6 +1,5 @@
 package io.gameservice
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import io.game.ConnectionHandler
 import io.util.logger
 import org.springframework.http.ResponseEntity
@@ -37,7 +36,6 @@ class RecieveFromMatchmaker {
     fun check(@RequestParam("gameId") gameId: String): ResponseEntity<Boolean> {
         return ResponseEntity.ok(ConnectionHandler.matches[gameId] == null)
     }
-
 
     @RequestMapping(
             path = ["/start"],

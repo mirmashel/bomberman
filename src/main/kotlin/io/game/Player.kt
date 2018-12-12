@@ -16,12 +16,12 @@ import io.util.toJson
 import org.springframework.web.socket.WebSocketSession
 
 class Player(
-        val id: Int,
-        val game: Match,
-        private val name: String,
-        var xPos: Int,
-        var yPos: Int,
-        val session: WebSocketSession
+    val id: Int,
+    val game: Match,
+    private val name: String,
+    var xPos: Int,
+    var yPos: Int,
+    val session: WebSocketSession
 ) : Tickable {
     var explosionSize = 1
     var speed = 3
@@ -47,6 +47,7 @@ class Player(
 
     // for checking collisions
     private fun downBorderX(x: Int): Int = x
+
     private fun leftBorderY(y: Int): Int = y + Match.mult / 8
     private fun upBorderX(x: Int): Int = x + Match.mult / 2
     private fun rightBorderY(y: Int): Int = y + 2 * Match.mult / 3
