@@ -1,5 +1,6 @@
 package start
 
+import com.kohttp.dsl.httpGet
 import com.kohttp.dsl.httpPost
 import com.kohttp.ext.EagerResponse
 import com.kohttp.ext.eager
@@ -18,6 +19,15 @@ class ToServer {
                 form {
                     "players" to players
                 }
+            }
+        }.eager()
+
+        fun checkGame(gameId: String) = httpGet {
+            host = HOST
+            port = PORT
+            path = "/game/check"
+            param {
+                "gameId" to gameId
             }
         }.eager()
 /*

@@ -53,7 +53,6 @@ class MatchMakingController {
 
     fun joinToGame1(name: String): ResponseEntity<String> {
         val gameReg = ToServer.create(1)
-        log.info("${gameReg.code}")
         return if (gameReg.code != 200) {
             players += name
             ResponseEntity.badRequest().body("Unable to create game")
@@ -66,7 +65,6 @@ class MatchMakingController {
     fun joinToGame2(name: String): ResponseEntity<String> = when {
         gamesFor2.isEmpty() -> {
             val gameReq = ToServer.create(2)
-            log.info("${gameReq.code}")
             if (gameReq.code != 200) {
                 players += name
                 ResponseEntity.badRequest().body("Unable to create game")
@@ -78,9 +76,12 @@ class MatchMakingController {
         }
         else -> {
             val game = gamesFor2.pop()
-            log.info(game)
-            ToServer.start(game)
-            ResponseEntity.ok(game)
+            if (ToServer.checkGame(game).body == "true") {
+                joinToGame2(name)
+            } else {
+                ToServer.start(game)
+                ResponseEntity.ok(game)
+            }
         }
     }
 
@@ -101,11 +102,16 @@ class MatchMakingController {
         else -> {
             val game = gamesFor4.keys().nextElement()
             gamesFor4[game] = gamesFor4[game]!! + 1
-            if (gamesFor4[game] == 4) {
-                ToServer.start(game)
+            if (ToServer.checkGame(game).body == "true") {
                 gamesFor4.remove(game)
+                joinToGame4(name)
+            } else {
+                if (gamesFor4[game] == 4) {
+                    ToServer.start(game)
+                    gamesFor4.remove(game)
+                }
+                ResponseEntity.ok(game)
             }
-            ResponseEntity.ok(game)
         }
     }
 
