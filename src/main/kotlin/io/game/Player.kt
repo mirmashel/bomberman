@@ -24,7 +24,7 @@ class Player(
     val session: WebSocketSession
 ) : Tickable {
     var explosionSize = 1
-    var speed = 3
+    var speed = 1
     var maxNumberOfBombs = 1
     var bombsPlanted = 0
     var isAlive = true
@@ -96,8 +96,8 @@ class Player(
                 else -> {
                 }
             }
-            prib++
-        } else prib = (prib + 1) % 3
+            // prib++
+        } // else prib = (prib + 1) % 3
         val newX1 = downBorderX(nX)
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)
@@ -119,6 +119,7 @@ class Player(
                 when {
                     direction == Actions.MOVE_LEFT && !checkStep(obj3) -> nX++
                     direction == Actions.MOVE_DOWN && !checkStep(obj2) -> nY++
+                    direction == Actions.MOVE_RIGHT || direction == Actions.MOVE_UP -> {}
                     else -> {
                         nY = yPos
                         nX = xPos
@@ -130,6 +131,7 @@ class Player(
                 when {
                     direction == Actions.MOVE_RIGHT && !checkStep(obj4) -> nX++
                     direction == Actions.MOVE_DOWN && !checkStep(obj1) -> nY--
+                    direction == Actions.MOVE_LEFT || direction == Actions.MOVE_UP -> {}
                     else -> {
                         nY = yPos
                         nX = xPos
@@ -141,6 +143,7 @@ class Player(
                 when {
                     direction == Actions.MOVE_LEFT && !checkStep(obj1) -> nX--
                     direction == Actions.MOVE_UP && !checkStep(obj4) -> nY++
+                    direction == Actions.MOVE_RIGHT || direction == Actions.MOVE_DOWN -> {}
                     else -> {
                         nY = yPos
                         nX = xPos
@@ -152,6 +155,7 @@ class Player(
                 when {
                     direction == Actions.MOVE_RIGHT && !checkStep(obj2) -> nX--
                     direction == Actions.MOVE_UP && !checkStep(obj3) -> nY--
+                    direction == Actions.MOVE_LEFT || direction == Actions.MOVE_DOWN -> {}
                     else -> {
                         nY = yPos
                         nX = xPos
@@ -190,7 +194,8 @@ class Player(
             curIdle == maxIdles -> playerInfo.direction = "IDLE"
             else -> curIdle++
         }
-        send()
+        if (curIdle <= maxIdles)
+            send()
 
         if (isAlive)
             when {

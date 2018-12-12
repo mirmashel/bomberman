@@ -19,8 +19,8 @@ class Box(val game: Match, val xPos: Int, val yPos: Int) : Destructible, GameObj
         game.field[xPos, yPos] = when {
             rnd < dropChance -> Bonus(game, xPos, yPos, BonusType.BOMBS)
             rnd < dropChance * 2 -> Bonus(game, xPos, yPos, BonusType.RANGE)
-            rnd < dropChance * 3 -> Bonus(game, xPos, yPos, BonusType.SPEED)
-            rnd < dropChance * 4 -> Bonus(game, xPos, yPos, BonusType.PORTAL)
+            rnd < dropChance * 3 - 1 -> Bonus(game, xPos, yPos, BonusType.SPEED)
+            rnd < dropChance * 4 + 2 -> Bonus(game, xPos, yPos, BonusType.PORTAL)
             else -> Floor()
         }
         val b = game.field[xPos, yPos]
