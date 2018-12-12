@@ -2,42 +2,19 @@
 <!-- .slide: class="center" -->
 @title[Kotlin]
 
-### Lecture 8
-#### WebSocket and Final Project 
+### Final project
+#### Online bomberman game 
 
 
 ---
-@title[Sign in]
+@title[Credits]
 <!-- .slide: class="center" -->
 
-Please [**sign in**](https://sphere.mail.ru/)
- 
-*For off-line students only*
-
-
----
-@title[Get ready]
-<!-- .slide: class="center" -->
-```bash
-git fetch upstream
-git checkout -b lecture08 upstream/lecture08
-cd lecture08
-```
-
-open as new project
-
+Backend — Vitaly Makeev
+Frontend — Artur
+Web - Maxim Krasilnimov
 
 ---
-@title[Agenda]
-0. @css[highlight](WebSocket)
-0. Game architecture
-0. Game client
-0. Time model
-0. Client-server protocol
-0. Project task
-
----
-
 @title[Architecture overview]
 <!-- .slide: class="center" -->
 <img src="lecture08/slides/assets/images/Bomberman-architecture.png" alt="exception" style="width: 900px;"/>
