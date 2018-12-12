@@ -158,7 +158,7 @@ class Player(
                 updatePos(nX, nY)
             }
         }
-        if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4)) {
+        /*if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4)) {
             if (prib == 0) {
                 repeat(speed) {
                     when (direction) {
@@ -170,10 +170,13 @@ class Player(
                         }
                     }
                     send()
-                   // game.parseOutput()
                 }
                 prib++
             } else prib = (prib + 1) % 3
+        }*/
+
+        if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4)) {
+            updatePos(nX, nY)
         }
 
         // resetting direction player is facing
