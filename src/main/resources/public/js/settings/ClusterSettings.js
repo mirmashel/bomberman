@@ -1,6 +1,6 @@
 var ClusterSetting = function () {
     this.gameServer = {
-        protocol: 'ws',
+        protocol: 'http',
         host: 'localhost',
         port: '8090',
         path: '/connect'
@@ -15,7 +15,7 @@ var ClusterSetting = function () {
 };
 
 ClusterSetting.prototype.gameServerUrl = function() {
-    return makeUrl2(this.gameServer)
+    return makeUrl(this.gameServer)
 };
 
 ClusterSetting.prototype.matchMakerUrl = function() {
@@ -26,8 +26,5 @@ function makeUrl(data) {
     return data['protocol'] + "://" + data['host'] + ":" + data['port'] + data['path']
 }
 
-function makeUrl2(data) {
-    return data['protocol'] + ":" + data['host'] + ":" + data['port'] + data['path']
-}
 
 var gClusterSettings = new ClusterSetting();

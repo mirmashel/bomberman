@@ -32,7 +32,7 @@ ServerProxy.prototype.setupMessaging = function() {
 ServerProxy.prototype.connectToGameServer = function(gameId) {
     console.log(gClusterSettings.gameServerUrl());
     //this.socket = new SockJS(gClusterSettings.gameServerUrl());
-    this.socket = new SockJS("http://localhost:8090/connect");
+    this.socket = new SockJS(gClusterSettings.gameServerUrl());
     var self = this;
     var isStarted = false;
     this.socket.onmessage = function (event) {
