@@ -95,7 +95,8 @@ class Player(
                 else -> {
                 }
             }
-        }
+            prib++
+        } else prib = (prib + 1) % 3
         val newX1 = downBorderX(nX)
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)

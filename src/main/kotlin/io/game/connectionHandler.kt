@@ -26,6 +26,7 @@ class ConnectionHandler : TextWebSocketHandler() {
                 while (!match.started) {
                     if (match.players.size != 0 && match.connections.countOpenWebsocks() == 0) {
                         matches.remove(gameId)
+                        log.info("Game $gameId ended")
                         break
                     }
                     sleep(1_000)
