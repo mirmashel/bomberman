@@ -76,10 +76,11 @@ class Match(val id: String, val numberOfPlayers: Int) : Tickable {
             while (outputQueue.isNotEmpty()) {
             }
             log.info("Game $id ended")
+            ConnectionHandler.matches.remove(id)
         }
     }
 
-    private fun parseOutput() {
+    fun parseOutput() {
         if (outputQueue.isNotEmpty())
             connections.broadcast(Message(Topic.REPLICA, outputQueue.toJson()).toJson())
         outputQueue.clear()

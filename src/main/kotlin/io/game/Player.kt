@@ -16,12 +16,12 @@ import io.util.toJson
 import org.springframework.web.socket.WebSocketSession
 
 class Player(
-    val id: Int,
-    val game: Match,
-    private val name: String,
-    var xPos: Int,
-    var yPos: Int,
-    val session: WebSocketSession
+        val id: Int,
+        val game: Match,
+        private val name: String,
+        var xPos: Int,
+        var yPos: Int,
+        val session: WebSocketSession
 ) : Tickable {
     var explosionSize = 1
     var speed = 3
@@ -47,7 +47,6 @@ class Player(
 
     // for checking collisions
     private fun downBorderX(x: Int): Int = x
-
     private fun leftBorderY(y: Int): Int = y + Match.mult / 8
     private fun upBorderX(x: Int): Int = x + Match.mult / 2
     private fun rightBorderY(y: Int): Int = y + 2 * Match.mult / 3
@@ -55,13 +54,15 @@ class Player(
     val playerInfo = Chel(id, "Pawn", Cords(yPos, xPos), isAlive, direction.name.substringAfter("MOVE_"))
 
     private fun kill() {
-        isAlive = false
-        log.info("Player $name dead")
-        // game.currentPlayers--
-        game.connections.connections.remove(session)
-        game.sendPlayers()
-        game.addToOutputQueue(playerInfo.json())
-        game.connections.send(session, Message(Topic.DEAD, "").toJson())
+        if (isAlive) {
+            isAlive = false
+            log.info("Player $name dead")
+            // game.currentPlayers--
+            game.connections.connections.remove(session)
+            game.sendPlayers()
+            game.addToOutputQueue(playerInfo.json())
+            game.connections.send(session, Message(Topic.DEAD, "").toJson())
+        }
     }
 
     private fun checkStep(obj: GameObject) =
@@ -94,9 +95,7 @@ class Player(
                 else -> {
                 }
             }
-            prib++
-        } else
-            prib = (prib + 1) % 3
+        }
         val newX1 = downBorderX(nX)
         val newY1 = leftBorderY(nY)
         val newX2 = upBorderX(nX)
@@ -159,9 +158,23 @@ class Player(
                 updatePos(nX, nY)
             }
         }
-
-        if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4))
-            updatePos(nX, nY)
+        if (direction.name != "IDLE" && !checkStep(obj1) && !checkStep(obj2) && !checkStep(obj3) && !checkStep(obj4)) {
+            if (prib == 0) {
+                repeat(speed) {
+                    when (direction) {
+                        Actions.MOVE_UP -> updatePos(xPos + 1, yPos)
+                        Actions.MOVE_LEFT -> updatePos(xPos, yPos - 1)
+                        Actions.MOVE_DOWN -> updatePos(xPos - 1, yPos)
+                        Actions.MOVE_RIGHT -> updatePos(xPos, yPos + 1)
+                        else -> {
+                        }
+                    }
+                    send()
+                   // game.parseOutput()
+                }
+                prib++
+            } else prib = (prib + 1) % 3
+        }
 
         // resetting direction player is facing
         when {
