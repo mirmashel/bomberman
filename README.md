@@ -1,4 +1,5 @@
 # bomberman
 Simple online bomberman game which supports up to 4 players.  
-Done for mail.ru technoshpere [kotlin course](https://github.com/rybalkinsd/kotlin-boot-camp/)  
-There are game mechanics in master branch and frontend + matchmaker in matchmaker 
+This game was a final project for mail.ru technoshpere [kotlin course](https://github.com/rybalkinsd/kotlin-boot-camp/)  
+[Frontend repository](https://github.com/rybalkinsd/atom-bomberman-frontend)
+ 
